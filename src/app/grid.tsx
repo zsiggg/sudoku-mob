@@ -10,17 +10,16 @@ const Grid = () => {
   const onDigitInput = (i: number, e: FormEvent<HTMLInputElement>) => {
     const digit = parseInt(e.currentTarget.value);
 
-    // reset the input to previous value if it is not empty or a digit
-    if (
-      e.currentTarget.value != '' &&
-      (isNaN(digit) || digit < 0 || digit > 9 || digit % 1 != 0)
-    ) {
+    if (e.currentTarget.value == '') {
+      // store empty string if user backspaces
+      digits[i] = '';
+    } else if (e.currentTarget.value.length == 1 && digit >= 0 && digit <= 9) {
+      // store valid digit
+      digits[i] = digit.toString();
+    } else {
+      // don't change input if other characters are input
       e.currentTarget.value = digits[i];
-      return;
     }
-
-    // store the new digit
-    digits[i] = digit.toString();
   };
 
   return (
