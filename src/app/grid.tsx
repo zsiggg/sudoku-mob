@@ -24,7 +24,7 @@ const Grid = () => {
   };
 
   return (
-    <div className="w-1/2 grid grid-cols-9 grid-rows-9 aspect-square">
+    <div className="grid aspect-square w-full grid-cols-9 grid-rows-9 lg:w-2/5">
       {digits.map((digit, i) => {
         // booleans to determine grid cells' borders
         const isLastRow = i + 1 >= 72;
@@ -39,7 +39,7 @@ const Grid = () => {
         return isDigitFromPuzzle ? (
           <div
             key={i}
-            className={`flex justify-center items-center ${borderClasses} text-gray-500`}
+            className={`flex items-center justify-center ${borderClasses} text-gray-500`}
           >
             {digits[i]}
           </div>
@@ -49,7 +49,7 @@ const Grid = () => {
             max={9}
             min={0}
             step={1}
-            className={`flex justify-center items-center ${borderClasses} bg-inherit text-center`}
+            className={`flex items-center justify-center ${borderClasses} bg-inherit text-center`}
             onInput={(e) => {
               onDigitInput(i, e);
             }}
