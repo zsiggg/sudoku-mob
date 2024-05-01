@@ -26,7 +26,7 @@ const Grid = ({ puzzle }: { puzzle: string }) => {
         setValidDigits,
         newDigits,
       );
-    } else if (e.currentTarget.value.length == 1 && digit >= 0 && digit <= 9) {
+    } else if (e.currentTarget.value.length == 1 && digit >= 1 && digit <= 9) {
       // store valid digit
       const newDigits = updateDigits(i, digit.toString(), digits, setDigits);
       updateValidDigits(
