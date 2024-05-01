@@ -2,9 +2,7 @@
 
 import { FormEvent } from 'react';
 
-const Grid = () => {
-  const puzzle =
-    '52...6.........7.13...........4..8..6......5...........418.........3..2...87.....';
+const Grid = ({ puzzle }: { puzzle: string }) => {
   const digits = puzzle.split('').map((str) => (str === '.' ? '' : str));
 
   const onDigitInput = (i: number, e: FormEvent<HTMLInputElement>) => {
