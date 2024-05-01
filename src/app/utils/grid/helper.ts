@@ -6,7 +6,7 @@ export const updateDigits = (
   digit: string,
   digits: string[],
   setDigits: Dispatch<SetStateAction<string[]>>,
-) => {
+): string[] => {
   // set digits
   const digitsCpy = [...digits];
   digitsCpy[i] = digit;
@@ -22,7 +22,20 @@ export const updateValidDigits = (
   validDigits: boolean[],
   setValidDigits: Dispatch<SetStateAction<boolean[]>>,
   digits: string[],
-) => {
+): boolean[] => {
+  // if user changed digit directly without backspacing, handle as backspace, then input new digit
+  if (prevDigit !== '' && digit !== '') {
+    validDigits = updateValidDigits(
+      i,
+      '',
+      prevDigit,
+      validDigits,
+      setValidDigits,
+      digits,
+    );
+    return updateValidDigits(i, digit, '', validDigits, setValidDigits, digits);
+  }
+
   const row = Math.floor(i / 9);
   const col = i % 9;
   const box = Math.floor(row / 3) * 3 + Math.floor(col / 3);
@@ -65,6 +78,8 @@ export const updateValidDigits = (
 
   console.log('validdigitscpy in helper file', validDigitsCpy);
   setValidDigits([...validDigitsCpy]);
+
+  return validDigitsCpy;
 };
 
 // update validDigits array of row, col or box indices
