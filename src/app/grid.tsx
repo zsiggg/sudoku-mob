@@ -43,6 +43,7 @@ const Grid = ({ puzzle }: { puzzle: string }) => {
         ) : (
           <input
             type="text"
+            key={i}
             max={9}
             min={0}
             step={1}
