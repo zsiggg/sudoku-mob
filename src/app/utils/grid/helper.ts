@@ -56,35 +56,24 @@ export const updateValidDigits = (
     return updateValidDigits(i, digit, '', validDigits, setValidDigits, digits);
   }
 
-  const row = Math.floor(i / 9);
-  const col = i % 9;
-  const box = Math.floor(row / 3) * 3 + Math.floor(col / 3);
+  const { row: rowIdxs, col: colIdxs, box: boxIdxs } = getRowColBoxIdxs(i);
   const targetDigit = digit === '' ? prevDigit : digit;
 
   // update validDigits of the row, col, and box of the digit
   const validDigitsCpy = [...validDigits];
 
-  const rowIdxs = Array.from({ length: 9 }, (_, col) => row * 9 + col);
   const isValidInRow = updateValidDigitsOfIndices(
     rowIdxs,
     validDigitsCpy,
     targetDigit,
     digits,
   );
-
-  const colIdxs = Array.from({ length: 9 }, (_, row) => row * 9 + col);
   const isValidInCol = updateValidDigitsOfIndices(
     colIdxs,
     validDigitsCpy,
     targetDigit,
     digits,
   );
-
-  const boxIdxs = Array.from({ length: 9 }, (_, boxIdx) => {
-    const currRow = Math.floor(box / 3) * 3 + Math.floor(boxIdx / 3);
-    const currCol = (box % 3) * 3 + (boxIdx % 3);
-    return currRow * 9 + currCol;
-  });
   const isValidInBox = updateValidDigitsOfIndices(
     boxIdxs,
     validDigitsCpy,
@@ -96,7 +85,6 @@ export const updateValidDigits = (
     digit === '' ||
     (digit !== '' && isValidInRow && isValidInCol && isValidInBox);
 
-  console.log('validdigitscpy in helper file', validDigitsCpy);
   setValidDigits([...validDigitsCpy]);
 
   return validDigitsCpy;
@@ -135,16 +123,7 @@ const updateValidDigitsOfIndices = (
     } else {
       // if previously not valid, check if targetDigit exists in its own row, col, box
 
-      const row = Math.floor(i / 9);
-      const col = i % 9;
-      const box = Math.floor(row / 3) * 3 + Math.floor(col / 3);
-      const rowIdxs = Array.from({ length: 9 }, (_, col) => row * 9 + col);
-      const colIdxs = Array.from({ length: 9 }, (_, row) => row * 9 + col);
-      const boxIdxs = Array.from({ length: 9 }, (_, boxIdx) => {
-        const currRow = Math.floor(box / 3) * 3 + Math.floor(boxIdx / 3);
-        const currCol = (box % 3) * 3 + (boxIdx % 3);
-        return currRow * 9 + currCol;
-      });
+      const { row: rowIdxs, col: colIdxs, box: boxIdxs } = getRowColBoxIdxs(i);
 
       const idxs = Array.from(new Set(rowIdxs.concat(colIdxs).concat(boxIdxs))); // unique indices
       const targetDigitCount = idxs.reduce(
