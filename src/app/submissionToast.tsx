@@ -1,14 +1,34 @@
+import { Transition } from '@headlessui/react';
 import { CheckIcon, XMarkIcon } from '@heroicons/react/16/solid';
 import { Toast } from 'flowbite-react';
 import { usePathname } from 'next/navigation';
 
-const SubmissionToast = ({ isSuccess }: { isSuccess: boolean }) => {
+const SubmissionToast = ({
+  isShowingSuccess,
+  isShowingFailure,
+  onSuccessDismiss,
+  onFailureDismiss,
+}: {
+  isShowingSuccess: boolean;
+  isShowingFailure: boolean;
+  onSuccessDismiss: () => void;
+  onFailureDismiss: () => void;
+}) => {
   const pathname = usePathname();
 
   return (
     <>
-      {isSuccess ? (
-        <Toast className="fixed top-5 w-fit bg-white p-2">
+      <Transition
+        appear={true}
+        show={isShowingSuccess}
+        enter="transition-transform transition-gpu duration-300 ease-out"
+        enterFrom="-translate-y-20"
+        enterTo="translate-y-0"
+        leave="transition-transform transition-gpu duration-300 ease-out"
+        leaveFrom="translate-y-0"
+        leaveTo="-translate-y-20"
+      >
+        <Toast className="fixed left-1/2 top-0 w-max -translate-x-1/2 translate-y-5 bg-white p-2">
           <div className="inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-green-100 text-green-500">
             <CheckIcon className="size-5" />
           </div>
@@ -19,17 +39,27 @@ const SubmissionToast = ({ isSuccess }: { isSuccess: boolean }) => {
           >
             Restart?
           </a>
-          <Toast.Toggle />
+          <Toast.Toggle onDismiss={onSuccessDismiss} />
         </Toast>
-      ) : (
-        <Toast className="fixed top-5 w-fit bg-white p-2">
+      </Transition>
+      <Transition
+        appear={true}
+        show={isShowingFailure}
+        enter="transition-transform transition-gpu duration-300 ease-out"
+        enterFrom="-translate-y-20"
+        enterTo="translate-y-0"
+        leave="transition-transform transition-gpu duration-300 ease-out"
+        leaveFrom="translate-y-0"
+        leaveTo="-translate-y-20"
+      >
+        <Toast className="fixed left-1/2 top-0 w-max -translate-x-1/2 translate-y-5 bg-white p-2">
           <div className="inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-red-100 text-red-500">
             <XMarkIcon className="size-5" />
           </div>
           <div className="mx-2 text-sm">Check the puzzle again</div>
-          <Toast.Toggle />
+          <Toast.Toggle onDismiss={onFailureDismiss} />
         </Toast>
-      )}
+      </Transition>
     </>
   );
 };

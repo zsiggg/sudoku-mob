@@ -128,8 +128,12 @@ const Grid = ({ puzzle }: { puzzle: string }) => {
 
   return (
     <>
-      {showSuccessToast && <SubmissionToast isSuccess={true} />}
-      {showFailureToast && <SubmissionToast isSuccess={false} />}
+      <SubmissionToast
+        isShowingSuccess={showSuccessToast}
+        isShowingFailure={showFailureToast}
+        onSuccessDismiss={() => setShowSuccessToast(false)}
+        onFailureDismiss={() => setShowFailureToast(false)}
+      />
       <div className="flex h-full flex-col items-center justify-center space-y-5 text-xl md:p-10 lg:space-y-7 xl:p-5">
         <div
           className="grid aspect-square w-full grid-cols-9 grid-rows-9 lg:w-2/5 xl:w-1/2"
