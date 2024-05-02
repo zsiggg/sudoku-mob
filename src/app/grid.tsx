@@ -83,7 +83,7 @@ const Grid = ({ puzzle }: { puzzle: string }) => {
     <>
       {showSuccessToast && (
         <Toast className="fixed top-5 w-fit bg-white p-2">
-          <div className="inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200">
+          <div className="inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-green-100 text-green-500">
             <CheckIcon className="size-5" />
           </div>
           <div className="ml-2 text-sm">You solved it!</div>
@@ -98,15 +98,15 @@ const Grid = ({ puzzle }: { puzzle: string }) => {
       )}
       {showFailureToast && (
         <Toast className="fixed top-5 w-fit bg-white p-2">
-          <div className="inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-red-100 text-red-500 dark:bg-red-800 dark:text-red-200">
+          <div className="inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-red-100 text-red-500">
             <XMarkIcon className="size-5" />
           </div>
           <div className="mx-2 text-sm">Check the puzzle again</div>
           <Toast.Toggle />
         </Toast>
       )}
-      <div className="flex flex-col items-center space-y-5 lg:space-y-8">
-        <div className="grid aspect-square w-full grid-cols-9 grid-rows-9 lg:w-2/5">
+      <div className="flex h-full flex-col items-center justify-center space-y-5 text-xl md:p-10 lg:space-y-7 xl:p-5">
+        <div className="grid aspect-square w-full grid-cols-9 grid-rows-9 lg:w-2/5 xl:w-1/2">
           {initialDigits.map((digit, i) => {
             // booleans to determine grid cells' borders
             const isLastRow = i + 1 >= 72;
@@ -121,7 +121,7 @@ const Grid = ({ puzzle }: { puzzle: string }) => {
             return isDigitFromPuzzle ? (
               <div
                 key={i}
-                className={`flex items-center justify-center ${borderClasses} ${validDigits[i] ? 'text-gray-500' : 'text-red-500'}`}
+                className={`flex items-center justify-center ${borderClasses} ${validDigits[i] ? 'text-sky-800/25' : 'text-red-500/50'}`}
               >
                 {digits[i]}
               </div>
@@ -132,7 +132,7 @@ const Grid = ({ puzzle }: { puzzle: string }) => {
                 max={9}
                 min={0}
                 step={1}
-                className={`flex items-center justify-center ${borderClasses} bg-inherit text-center ${validDigits[i] ? 'text-white' : 'text-red-500'}`}
+                className={`flex items-center justify-center ${borderClasses} bg-inherit text-center ${validDigits[i] ? '' : 'text-red-500'}`}
                 onInput={(e) => {
                   onDigitInput(i, e);
                 }}
@@ -142,7 +142,7 @@ const Grid = ({ puzzle }: { puzzle: string }) => {
         </div>
         <button disabled={emptyCellCount !== 0} onClick={() => onSubmit()}>
           <CheckIcon
-            className={`mx-auto size-12 lg:size-10 ${emptyCellCount === 0 ? 'text-white' : 'text-gray-500'}`}
+            className={`mx-auto size-12 lg:size-10 ${emptyCellCount === 0 ? 'text-sky-800/100' : 'text-sky-800/25'}`}
           />
         </button>
       </div>
