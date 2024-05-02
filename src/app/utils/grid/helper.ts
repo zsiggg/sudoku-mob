@@ -83,12 +83,13 @@ export const updateValidDigits = (
 };
 
 // update validDigits array of row, col or box indices
+// returns whether all targetDigits at the indices are valid
 const updateValidDigitsOfIndices = (
   indices: number[],
   validDigits: boolean[],
   targetDigit: string,
   digits: string[],
-) => {
+): boolean => {
   // get indices where digits[i] === targetDigit
   const targetDigitIndices = indices.reduce((acc, idx) => {
     if (digits[idx] === targetDigit) {
@@ -97,15 +98,52 @@ const updateValidDigitsOfIndices = (
     return acc;
   }, new Array<number>());
 
-  // if >1 occurrences of targetDigit, then the occurrences are not valid
-  const isValid = targetDigitIndices.length <= 1;
+  if (targetDigitIndices.length > 1) {
+    // if >1 occurrence of targetDigit, then not valid
+    targetDigitIndices.forEach((i) => {
+      validDigits[i] = false;
+    });
+    return false;
+  } else if (targetDigitIndices.length === 1) {
+    // if only 1 occurrence of targetDigit, valid if no other digits in its own row, col, box
+    const i = targetDigitIndices[0];
+    const isPreviouslyValid = validDigits[i];
+    if (isPreviouslyValid) {
+      // if previously valid, must be that targetDigit did not exist in its own row, col, box
+      validDigits[i] = true;
+      return true;
+    } else {
+      // if previously not valid, check if targetDigit exists in its own row, col, box
 
-  // update validDigits array
-  targetDigitIndices.forEach((i) => {
-    validDigits[i] = isValid;
-  });
+      const row = Math.floor(i / 9);
+      const col = i % 9;
+      const box = Math.floor(row / 3) * 3 + Math.floor(col / 3);
+      const rowIdxs = Array.from({ length: 9 }, (_, col) => row * 9 + col);
+      const colIdxs = Array.from({ length: 9 }, (_, row) => row * 9 + col);
+      const boxIdxs = Array.from({ length: 9 }, (_, boxIdx) => {
+        const currRow = Math.floor(box / 3) * 3 + Math.floor(boxIdx / 3);
+        const currCol = (box % 3) * 3 + (boxIdx % 3);
+        return currRow * 9 + currCol;
+      });
 
-  return isValid;
+      const idxs = Array.from(new Set(rowIdxs.concat(colIdxs).concat(boxIdxs))); // unique indices
+      const targetDigitCount = idxs.reduce(
+        (count, idx) => (digits[idx] === targetDigit ? count + 1 : count),
+        0,
+      );
+
+      if (targetDigitCount > 1) {
+        validDigits[i] = false;
+        return false;
+      } else {
+        validDigits[i] = true;
+        return true;
+      }
+    }
+  } else {
+    // if no occurrence of targetDigit, then by default it is valid
+    return true;
+  }
 };
 
 export const isValidSudoku = (digits: string[]) => {
