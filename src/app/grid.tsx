@@ -136,7 +136,7 @@ const Grid = ({ puzzle }: { puzzle: string }) => {
       />
       <div className="flex h-full flex-col items-center justify-center space-y-5 text-xl md:p-10 lg:space-y-7 xl:p-5">
         <div
-          className="grid aspect-square w-full grid-cols-9 grid-rows-9 lg:w-2/5 xl:w-1/2"
+          className="grid aspect-square w-full grid-cols-9 grid-rows-9 border-2 border-sky-950 lg:w-2/5 xl:w-1/2"
           onMouseLeave={onNoHover}
         >
           {initialDigits.map((digit, i) => {
@@ -145,16 +145,16 @@ const Grid = ({ puzzle }: { puzzle: string }) => {
             const isLastCol = (i + 1) % 9 == 0;
             const isMultipleOf3InnerRow = i % 27 >= 18 && !isLastRow;
             const isMultipleof3InnerCol = (i + 1) % 3 == 0 && !isLastCol;
-            const borderClasses = `border ${
-              isMultipleOf3InnerRow ? 'border-b-[3px]' : ''
-            } ${isMultipleof3InnerCol ? 'border-r-[3px]' : ''}`;
+            const borderClasses = `border-[0.5px] border-sky-800 border-opacity-60 ${
+              isMultipleOf3InnerRow ? 'border-b-[2px]' : ''
+            } ${isMultipleof3InnerCol ? 'border-r-[2px]' : ''}`;
             const isDigitFromPuzzle = !isNaN(parseInt(digit));
 
             return isDigitFromPuzzle ? (
               <div
                 key={i}
                 tabIndex={i}
-                className={`flex size-full items-center justify-center ${borderClasses} ${validDigits[i] ? 'text-sky-800/25' : 'text-red-500/50'} ${clickedIdx === i ? 'bg-sky-800/50' : isHighlightedArr[i] ? 'bg-sky-800/25' : ''}`}
+                className={`flex size-full items-center justify-center ${borderClasses} ${validDigits[i] ? 'text-sky-800/50' : 'text-red-600/50'} ${clickedIdx === i ? 'bg-sky-800/50' : isHighlightedArr[i] ? 'bg-sky-800/25' : ''}`}
                 onMouseEnter={() => onHover(i)}
                 onFocus={() => onFocus(i)}
                 onBlur={onBlur}
@@ -169,7 +169,7 @@ const Grid = ({ puzzle }: { puzzle: string }) => {
                 max={9}
                 min={0}
                 step={1}
-                className={`flex items-center justify-center ${borderClasses} bg-inherit text-center ${validDigits[i] ? '' : 'text-red-500'} ${clickedIdx === i ? 'bg-sky-800/50' : isHighlightedArr[i] ? 'bg-sky-800/25' : ''}`}
+                className={`flex items-center justify-center ${borderClasses} bg-inherit text-center ${validDigits[i] ? '' : 'text-red-600'} ${clickedIdx === i ? 'bg-sky-800/50' : isHighlightedArr[i] ? 'bg-sky-800/25' : ''}`}
                 onInput={(e) => onDigitInput(i, e)}
                 onMouseEnter={() => onHover(i)}
                 onFocus={() => onFocus(i)}
