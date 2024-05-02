@@ -7,12 +7,10 @@ import {
   updateDigits,
   updateValidDigits,
 } from './utils/grid/helper';
-import { CheckIcon, XMarkIcon } from '@heroicons/react/16/solid';
-import { Toast } from 'flowbite-react';
-import { usePathname } from 'next/navigation';
+import { CheckIcon } from '@heroicons/react/16/solid';
+import SubmissionToast from './submissionToast';
 
 const Grid = ({ puzzle }: { puzzle: string }) => {
-  const pathname = usePathname();
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [showFailureToast, setShowFailureToast] = useState(false);
 
@@ -130,30 +128,8 @@ const Grid = ({ puzzle }: { puzzle: string }) => {
 
   return (
     <>
-      {showSuccessToast && (
-        <Toast className="fixed top-5 w-fit bg-white p-2">
-          <div className="inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-green-100 text-green-500">
-            <CheckIcon className="size-5" />
-          </div>
-          <div className="ml-2 text-sm">You solved it!</div>
-          <a
-            className="mx-1 rounded-lg p-1 text-sm font-medium text-cyan-600 hover:font-bold"
-            href={pathname}
-          >
-            Restart?
-          </a>
-          <Toast.Toggle />
-        </Toast>
-      )}
-      {showFailureToast && (
-        <Toast className="fixed top-5 w-fit bg-white p-2">
-          <div className="inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-red-100 text-red-500">
-            <XMarkIcon className="size-5" />
-          </div>
-          <div className="mx-2 text-sm">Check the puzzle again</div>
-          <Toast.Toggle />
-        </Toast>
-      )}
+      {showSuccessToast && <SubmissionToast isSuccess={true} />}
+      {showFailureToast && <SubmissionToast isSuccess={false} />}
       <div className="flex h-full flex-col items-center justify-center space-y-5 text-xl md:p-10 lg:space-y-7 xl:p-5">
         <div
           className="grid aspect-square w-full grid-cols-9 grid-rows-9 lg:w-2/5 xl:w-1/2"
