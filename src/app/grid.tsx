@@ -16,8 +16,9 @@ const Grid = ({ puzzle }: { puzzle: string }) => {
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [showFailureToast, setShowFailureToast] = useState(false);
 
+  const initialIsHighlightedArr = Array.from({ length: 81 }, () => false);
   const [isHighlightedArr, setIsHighlightedArr] = useState(
-    Array.from({ length: 81 }, () => false),
+    initialIsHighlightedArr,
   );
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const [clickedIdx, setClickedIdx] = useState<number | null>(null);
@@ -85,10 +86,7 @@ const Grid = ({ puzzle }: { puzzle: string }) => {
     }
   };
 
-  const onHover = (i: number, fromClickedEvent: boolean = false) => {
-    setHoveredIdx(i);
-
-    if (!fromClickedEvent && clickedIdx !== null) return;
+  const highlightRowColOfCell = (i: number) => {
     const rowColBoxIdxs = getRowColBoxIdxs(i);
     const toBeHighlightedIdxs = rowColBoxIdxs.row.concat(rowColBoxIdxs.col);
     const toBeHighlightedIdxsSet = new Set(toBeHighlightedIdxs);
@@ -96,6 +94,38 @@ const Grid = ({ puzzle }: { puzzle: string }) => {
       toBeHighlightedIdxsSet.has(i) ? true : false,
     );
     setIsHighlightedArr(newIsHighlightedArr);
+  };
+
+  const unhighlightAllCells = () => {
+    setIsHighlightedArr(initialIsHighlightedArr);
+  };
+
+  const onHover = (i: number) => {
+    setHoveredIdx(i);
+    if (clickedIdx === null) {
+      highlightRowColOfCell(i);
+    }
+  };
+
+  const onNoHover = () => {
+    setHoveredIdx(null);
+    if (clickedIdx === null) {
+      unhighlightAllCells();
+    }
+  };
+
+  const onFocus = (i: number) => {
+    setClickedIdx(i);
+    highlightRowColOfCell(i);
+  };
+
+  const onBlur = () => {
+    setClickedIdx(null);
+    if (hoveredIdx === null) {
+      unhighlightAllCells();
+    } else {
+      highlightRowColOfCell(hoveredIdx);
+    }
   };
 
   return (
@@ -127,12 +157,7 @@ const Grid = ({ puzzle }: { puzzle: string }) => {
       <div className="flex h-full flex-col items-center justify-center space-y-5 text-xl md:p-10 lg:space-y-7 xl:p-5">
         <div
           className="grid aspect-square w-full grid-cols-9 grid-rows-9 lg:w-2/5 xl:w-1/2"
-          onMouseLeave={() => {
-            setHoveredIdx(null);
-            if (clickedIdx === null) {
-              setIsHighlightedArr(Array.from({ length: 81 }, () => false));
-            }
-          }}
+          onMouseLeave={onNoHover}
         >
           {initialDigits.map((digit, i) => {
             // booleans to determine grid cells' borders
@@ -151,20 +176,8 @@ const Grid = ({ puzzle }: { puzzle: string }) => {
                 tabIndex={i}
                 className={`flex size-full items-center justify-center ${borderClasses} ${validDigits[i] ? 'text-sky-800/25' : 'text-red-500/50'} ${clickedIdx === i ? 'bg-sky-800/50' : isHighlightedArr[i] ? 'bg-sky-800/25' : ''}`}
                 onMouseEnter={() => onHover(i)}
-                onFocus={() => {
-                  setClickedIdx(i);
-                  onHover(i, true);
-                }}
-                onBlur={() => {
-                  setClickedIdx(null);
-                  if (hoveredIdx !== null) {
-                    onHover(hoveredIdx);
-                  } else {
-                    setIsHighlightedArr(
-                      Array.from({ length: 81 }, () => false),
-                    );
-                  }
-                }}
+                onFocus={() => onFocus(i)}
+                onBlur={onBlur}
               >
                 {digits[i]}
               </div>
@@ -177,24 +190,10 @@ const Grid = ({ puzzle }: { puzzle: string }) => {
                 min={0}
                 step={1}
                 className={`flex items-center justify-center ${borderClasses} bg-inherit text-center ${validDigits[i] ? '' : 'text-red-500'} ${clickedIdx === i ? 'bg-sky-800/50' : isHighlightedArr[i] ? 'bg-sky-800/25' : ''}`}
-                onInput={(e) => {
-                  onDigitInput(i, e);
-                }}
+                onInput={(e) => onDigitInput(i, e)}
                 onMouseEnter={() => onHover(i)}
-                onFocus={() => {
-                  setClickedIdx(i);
-                  onHover(i, true);
-                }}
-                onBlur={() => {
-                  setClickedIdx(null);
-                  if (hoveredIdx !== null) {
-                    onHover(hoveredIdx);
-                  } else {
-                    setIsHighlightedArr(
-                      Array.from({ length: 81 }, () => false),
-                    );
-                  }
-                }}
+                onFocus={() => onFocus(i)}
+                onBlur={onBlur}
               />
             );
           })}
