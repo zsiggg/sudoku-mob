@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from 'react';
 import {
+  getRowColBoxIdxs,
   isValidSudoku,
   updateDigits,
   updateValidDigits,
@@ -12,6 +13,14 @@ import { usePathname } from 'next/navigation';
 
 const Grid = ({ puzzle }: { puzzle: string }) => {
   const pathname = usePathname();
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [showFailureToast, setShowFailureToast] = useState(false);
+
+  const [isHighlightedArr, setIsHighlightedArr] = useState(
+    Array.from({ length: 81 }, () => false),
+  );
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+  const [clickedIdx, setClickedIdx] = useState<number | null>(null);
 
   const initialDigits = puzzle.split('').map((str) => (str === '.' ? '' : str));
   const initialEmptyCellCount = initialDigits.reduce(
@@ -19,9 +28,6 @@ const Grid = ({ puzzle }: { puzzle: string }) => {
     0,
   );
   const [emptyCellCount, setEmptyCellCount] = useState(initialEmptyCellCount);
-  const [showSuccessToast, setShowSuccessToast] = useState(false);
-  const [showFailureToast, setShowFailureToast] = useState(false);
-
   const [digits, setDigits] = useState(initialDigits);
   // assume puzzle is valid (no duplicate digits in rows, cols, or boxes)
   const [validDigits, setValidDigits] = useState(
@@ -79,6 +85,19 @@ const Grid = ({ puzzle }: { puzzle: string }) => {
     }
   };
 
+  const onHover = (i: number, fromClickedEvent: boolean = false) => {
+    setHoveredIdx(i);
+
+    if (!fromClickedEvent && clickedIdx !== null) return;
+    const rowColBoxIdxs = getRowColBoxIdxs(i);
+    const toBeHighlightedIdxs = rowColBoxIdxs.row.concat(rowColBoxIdxs.col);
+    const toBeHighlightedIdxsSet = new Set(toBeHighlightedIdxs);
+    const newIsHighlightedArr = isHighlightedArr.map((_, i) =>
+      toBeHighlightedIdxsSet.has(i) ? true : false,
+    );
+    setIsHighlightedArr(newIsHighlightedArr);
+  };
+
   return (
     <>
       {showSuccessToast && (
@@ -106,7 +125,15 @@ const Grid = ({ puzzle }: { puzzle: string }) => {
         </Toast>
       )}
       <div className="flex h-full flex-col items-center justify-center space-y-5 text-xl md:p-10 lg:space-y-7 xl:p-5">
-        <div className="grid aspect-square w-full grid-cols-9 grid-rows-9 lg:w-2/5 xl:w-1/2">
+        <div
+          className="grid aspect-square w-full grid-cols-9 grid-rows-9 lg:w-2/5 xl:w-1/2"
+          onMouseLeave={() => {
+            setHoveredIdx(null);
+            if (clickedIdx === null) {
+              setIsHighlightedArr(Array.from({ length: 81 }, () => false));
+            }
+          }}
+        >
           {initialDigits.map((digit, i) => {
             // booleans to determine grid cells' borders
             const isLastRow = i + 1 >= 72;
@@ -121,7 +148,23 @@ const Grid = ({ puzzle }: { puzzle: string }) => {
             return isDigitFromPuzzle ? (
               <div
                 key={i}
-                className={`flex items-center justify-center ${borderClasses} ${validDigits[i] ? 'text-sky-800/25' : 'text-red-500/50'}`}
+                tabIndex={i}
+                className={`flex size-full items-center justify-center ${borderClasses} ${validDigits[i] ? 'text-sky-800/25' : 'text-red-500/50'} ${clickedIdx === i ? 'bg-sky-800/50' : isHighlightedArr[i] ? 'bg-sky-800/25' : ''}`}
+                onMouseEnter={() => onHover(i)}
+                onFocus={() => {
+                  setClickedIdx(i);
+                  onHover(i, true);
+                }}
+                onBlur={() => {
+                  setClickedIdx(null);
+                  if (hoveredIdx !== null) {
+                    onHover(hoveredIdx);
+                  } else {
+                    setIsHighlightedArr(
+                      Array.from({ length: 81 }, () => false),
+                    );
+                  }
+                }}
               >
                 {digits[i]}
               </div>
@@ -129,12 +172,28 @@ const Grid = ({ puzzle }: { puzzle: string }) => {
               <input
                 type="text"
                 key={i}
+                tabIndex={i}
                 max={9}
                 min={0}
                 step={1}
-                className={`flex items-center justify-center ${borderClasses} bg-inherit text-center ${validDigits[i] ? '' : 'text-red-500'}`}
+                className={`flex items-center justify-center ${borderClasses} bg-inherit text-center ${validDigits[i] ? '' : 'text-red-500'} ${clickedIdx === i ? 'bg-sky-800/50' : isHighlightedArr[i] ? 'bg-sky-800/25' : ''}`}
                 onInput={(e) => {
                   onDigitInput(i, e);
+                }}
+                onMouseEnter={() => onHover(i)}
+                onFocus={() => {
+                  setClickedIdx(i);
+                  onHover(i, true);
+                }}
+                onBlur={() => {
+                  setClickedIdx(null);
+                  if (hoveredIdx !== null) {
+                    onHover(hoveredIdx);
+                  } else {
+                    setIsHighlightedArr(
+                      Array.from({ length: 81 }, () => false),
+                    );
+                  }
                 }}
               />
             );

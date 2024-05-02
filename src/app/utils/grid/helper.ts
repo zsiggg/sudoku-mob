@@ -1,5 +1,25 @@
 import { Dispatch, SetStateAction } from 'react';
 
+const rowIdxsArr = Array.from({ length: 9 }, (_, row) =>
+  Array.from({ length: 9 }, (_, col) => row * 9 + col),
+);
+const colIdxsArr = Array.from({ length: 9 }, (_, col) =>
+  Array.from({ length: 9 }, (_, row) => row * 9 + col),
+);
+const boxIdxsArr = Array.from({ length: 9 }, (_, box) =>
+  Array.from({ length: 9 }, (_, boxIdx) => {
+    const row = Math.floor(box / 3) * 3 + Math.floor(boxIdx / 3);
+    const col = (box % 3) * 3 + (boxIdx % 3);
+    return row * 9 + col;
+  }),
+);
+export const getRowColBoxIdxs = (i: number) => {
+  const row = Math.floor(i / 9);
+  const col = i % 9;
+  const box = Math.floor(row / 3) * 3 + Math.floor(col / 3);
+  return { row: rowIdxsArr[row], col: colIdxsArr[col], box: boxIdxsArr[box] };
+};
+
 // updates digits and validDigits arrays
 export const updateDigits = (
   i: number,
