@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import GridSuspense from '../gridSuspense';
+import GridSuspense from './components/gridSuspense';
 import SuspenseFallback from './loading';
 
 export default function Home({ params }: { params: { puzzle_id: string } }) {

@@ -1,4 +1,4 @@
-import { getPuzzle } from './getPuzzles';
+import { getPuzzle } from '../../utils/supabase/getPuzzles';
 import Grid from './grid';
 
 const GridSuspense = ({ puzzle_id }: { puzzle_id: string }) => {
