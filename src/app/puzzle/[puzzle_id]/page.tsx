@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import GridServer from './components/gridServer';
+import GridServer from '../../components/gridServer';
 import PuzzleLoading from './loading';
 
 export default function Home({ params }: { params: { puzzle_id: string } }) {

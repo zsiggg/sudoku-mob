@@ -6,13 +6,17 @@ import {
   isValidSudoku,
   updateDigits,
   updateValidDigits,
-} from '../../utils/gridClient/helper';
+} from '../utils/gridClient/helper';
 import { CheckIcon, PlusIcon } from '@heroicons/react/16/solid';
 import SubmissionToast from './submissionToast';
 import { Dropdown } from 'flowbite-react';
-import { getPuzzleIds } from '../../utils/supabase/puzzlesDb';
+import {
+  addPuzzle,
+  checkIsPuzzleInDb,
+  getPuzzleIds,
+} from '../utils/supabase/puzzlesDb';
 import Link from 'next/link';
-import { revalidateRootPath } from '../../utils/helper';
+import { revalidateRootPath } from '../utils/helper';
 
 const GridClient = ({
   puzzle,
@@ -21,8 +25,11 @@ const GridClient = ({
   puzzle: string;
   puzzle_id?: string;
 }) => {
+  const [puzzleRowNumber, setPuzzleRowNumber] = useState<number>();
+
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [showFailureToast, setShowFailureToast] = useState(false);
+  const [showAddedToDbToast, setShowAddedToDbToast] = useState(false);
 
   const initialIsHighlightedArr = Array.from({ length: 81 }, () => false);
   const [isHighlightedArr, setIsHighlightedArr] = useState(
@@ -82,11 +89,18 @@ const GridClient = ({
     }
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     const isValid = isValidSudoku(digits);
     if (isValid) {
       setShowFailureToast(false);
       setShowSuccessToast(true);
+      if (puzzle_id === undefined) {
+        const isPuzzleInDb = await checkIsPuzzleInDb(puzzle);
+        if (!isPuzzleInDb) {
+          await addPuzzle(puzzle);
+          setShowAddedToDbToast(true);
+        }
+      }
     } else {
       setShowFailureToast(true);
       setTimeout(() => setShowFailureToast(false), 5000);
@@ -138,33 +152,42 @@ const GridClient = ({
 
   const dropdownRef = useRef(new Promise<JSX.Element>(() => {}));
   useEffect(() => {
-    dropdownRef.current = getPuzzleIds().then((arr) => (
-      <>
-        {arr.map((id, i) => (
-          <>
-            {id !== puzzle_id ? (
-              <Dropdown.Item
-                as={Link}
-                href={`/${id}`}
-                key={id}
-                className="w-56 p-4 hover:bg-sky-100"
-              >
-                Puzzle {i + 1}
-              </Dropdown.Item>
-            ) : (
-              <Dropdown.Item
-                as="button"
-                key={id}
-                disabled={true}
-                className="w-56 bg-gray-100 p-4 opacity-50"
-              >
-                Puzzle {i + 1}
-              </Dropdown.Item>
-            )}
-          </>
-        ))}
-      </>
-    ));
+    dropdownRef.current = getPuzzleIds()
+      .then((arr) => {
+        arr.filter((id, i) => {
+          if (id === puzzle_id) {
+            setPuzzleRowNumber(i + 1);
+          }
+        });
+        return arr;
+      })
+      .then((arr) => (
+        <>
+          {arr.map((id, i) => (
+            <>
+              {id !== puzzle_id ? (
+                <Dropdown.Item
+                  as={Link}
+                  href={`/puzzle/${id}`}
+                  key={id}
+                  className="w-56 p-4 hover:bg-sky-100"
+                >
+                  Puzzle {i + 1}
+                </Dropdown.Item>
+              ) : (
+                <Dropdown.Item
+                  as="button"
+                  key={id}
+                  disabled={true}
+                  className="w-56 bg-gray-100 p-4 opacity-50"
+                >
+                  Puzzle {i + 1}
+                </Dropdown.Item>
+              )}
+            </>
+          ))}
+        </>
+      ));
   }, [puzzle_id]);
 
   return (
@@ -172,10 +195,21 @@ const GridClient = ({
       <SubmissionToast
         isShowingSuccess={showSuccessToast}
         isShowingFailure={showFailureToast}
+        isShowingAddedToDb={showAddedToDbToast}
         onSuccessDismiss={() => setShowSuccessToast(false)}
         onFailureDismiss={() => setShowFailureToast(false)}
+        onAddedToDbDismiss={() => setShowAddedToDbToast(false)} // test
       />
       <div className="flex h-full flex-col items-center justify-center space-y-5 text-xl md:p-10 lg:space-y-7 xl:p-5">
+        <div className="text-center text-3xl text-sky-800">
+          {puzzle_id === undefined ? (
+            <p>New Puzzle</p>
+          ) : puzzleRowNumber === undefined ? (
+            <div className="ml-1 h-10 w-44 animate-pulse rounded-lg bg-sky-100"></div>
+          ) : (
+            <p>{`Puzzle ${puzzleRowNumber}`}</p>
+          )}
+        </div>
         <div
           className="grid aspect-square w-full grid-cols-9 grid-rows-9 border-2 border-sky-950 lg:w-2/5 xl:w-1/2"
           onMouseLeave={onNoHover}
@@ -221,6 +255,7 @@ const GridClient = ({
         </div>
         <div className="flex items-center justify-center gap-5">
           <Dropdown
+            className="max-h-96 overflow-y-auto"
             placement="top"
             label=""
             renderTrigger={() => (
@@ -234,11 +269,19 @@ const GridClient = ({
             </Dropdown.Header>
             <Dropdown.Item
               as={Link}
-              href={`/`}
+              href={`/puzzle/new`}
               onClick={() => revalidateRootPath()}
               className="w-56 p-4 hover:bg-sky-100"
             >
-              Random Puzzle
+              New Puzzle
+            </Dropdown.Item>
+            <Dropdown.Item
+              as={Link}
+              href={`/puzzle`}
+              onClick={() => revalidateRootPath()}
+              className="w-56 p-4 hover:bg-sky-100"
+            >
+              Random from database
             </Dropdown.Item>
             <Suspense
               fallback={
