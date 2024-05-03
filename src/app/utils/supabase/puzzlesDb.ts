@@ -1,6 +1,6 @@
 'use server';
 
-import { createClient } from '@/app/utils/supabase/server';
+import { createClient } from '@/app/utils/supabase/createSupabaseClient/server';
 
 export const getPuzzleIds = async () => {
   const supabase = createClient();
