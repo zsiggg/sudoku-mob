@@ -1,4 +1,4 @@
-import GridServer from '@/app/components/gridServer';
+import PuzzleServer from '@/app/components/puzzleServer';
 import { getSudoku } from 'sudoku-gen';
 
 export default async function RandomNew() {
@@ -7,7 +7,7 @@ export default async function RandomNew() {
 
   return (
     <main className="flex h-screen flex-col items-center justify-between p-2">
-      <GridServer puzzle={puzzle} />
+      <PuzzleServer puzzle={puzzle} />
     </main>
   );
 }

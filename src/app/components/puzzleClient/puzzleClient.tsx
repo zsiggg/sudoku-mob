@@ -6,12 +6,12 @@ import {
   isValidSudoku,
   updateDigits,
   updateValidDigits,
-} from '../../utils/gridClient/helper';
+} from '../../utils/puzzleClient/helper';
 import SubmissionToast from './submissionToast';
 import { addPuzzle, checkIsPuzzleInDb } from '../../utils/supabase/puzzlesDb';
-import GridClientControlRow from './controlRow';
+import ControlRow from './controlRow';
 
-const GridClient = ({
+const PuzzleClient = ({
   puzzle,
   puzzleIds,
   puzzleId,
@@ -208,7 +208,7 @@ const GridClient = ({
             );
           })}
         </div>
-        <GridClientControlRow
+        <ControlRow
           puzzleIds={puzzleIds}
           puzzleId={puzzleId}
           emptyCellCount={emptyCellCount}
@@ -219,4 +219,4 @@ const GridClient = ({
   );
 };
 
-export default GridClient;
+export default PuzzleClient;

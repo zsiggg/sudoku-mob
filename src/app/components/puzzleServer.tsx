@@ -1,7 +1,7 @@
 import { getPuzzle, getPuzzleIds } from '../utils/supabase/puzzlesDb';
-import GridClient from './gridClient';
+import PuzzleClient from './puzzleClient';
 
-const GridServer = async ({
+const PuzzleServer = async ({
   puzzleId,
   puzzle,
 }: {
@@ -20,7 +20,7 @@ const GridServer = async ({
     puzzleIdsPromise,
     puzzleRowNumPromise,
   ]).then(([puzzle, puzzleIds, puzzleRowNum]) => (
-    <GridClient
+    <PuzzleClient
       puzzleId={puzzleId}
       puzzle={puzzle}
       puzzleIds={puzzleIds}
@@ -29,4 +29,4 @@ const GridServer = async ({
   ));
 };
 
-export default GridServer;
+export default PuzzleServer;
