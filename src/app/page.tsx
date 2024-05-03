@@ -1,4 +1,4 @@
-import { getRandomPuzzleId } from './utils/supabase/getPuzzles';
+import { getRandomPuzzleId } from './utils/supabase/puzzlesDb';
 import { redirect } from 'next/navigation';
 
 export default async function Home() {

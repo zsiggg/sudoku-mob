@@ -10,7 +10,7 @@ import {
 import { CheckIcon, PlusIcon } from '@heroicons/react/16/solid';
 import SubmissionToast from './submissionToast';
 import { Dropdown } from 'flowbite-react';
-import { getPuzzleIds } from '../../utils/supabase/getPuzzles';
+import { getPuzzleIds } from '../../utils/supabase/puzzlesDb';
 import Link from 'next/link';
 import { revalidateRootPath } from '../../utils/helper';
 

@@ -2,26 +2,6 @@
 
 import { createClient } from '@/app/utils/supabase/server';
 
-export const getPuzzles = async () => {
-  const supabase = createClient();
-  const { data, error } = await supabase
-    .from('sudoku_puzzles')
-    .select('puzzle');
-  if (error) throw error;
-
-  return data.map((row) => row.puzzle);
-};
-
-export const getPuzzleCount = async () => {
-  const supabase = createClient();
-  const { count, error } = await supabase
-    .from('sudoku_puzzles')
-    .select('*', { count: 'exact', head: true });
-  if (error) throw error;
-
-  return count;
-};
-
 export const getPuzzleIds = async () => {
   const supabase = createClient();
   const { data, error } = await supabase.from('sudoku_puzzles').select('id');
