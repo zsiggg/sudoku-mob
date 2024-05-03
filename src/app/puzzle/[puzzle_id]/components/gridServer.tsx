@@ -1,4 +1,4 @@
-import { getPuzzle } from '../../utils/supabase/puzzlesDb';
+import { getPuzzle } from '../../../utils/supabase/puzzlesDb';
 import GridClient from './gridClient';
 
 const GridServer = ({ puzzle_id }: { puzzle_id: string }) => {

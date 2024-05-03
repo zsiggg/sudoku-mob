@@ -6,13 +6,13 @@ import {
   isValidSudoku,
   updateDigits,
   updateValidDigits,
-} from '../../utils/gridClient/helper';
+} from '../../../utils/gridClient/helper';
 import { CheckIcon, PlusIcon } from '@heroicons/react/16/solid';
 import SubmissionToast from './submissionToast';
 import { Dropdown } from 'flowbite-react';
-import { getPuzzleIds } from '../../utils/supabase/puzzlesDb';
+import { getPuzzleIds } from '../../../utils/supabase/puzzlesDb';
 import Link from 'next/link';
-import { revalidateRootPath } from '../../utils/helper';
+import { revalidateRootPath } from '../../../utils/helper';
 
 const GridClient = ({
   puzzle,
@@ -145,7 +145,7 @@ const GridClient = ({
             {id !== puzzle_id ? (
               <Dropdown.Item
                 as={Link}
-                href={`/${id}`}
+                href={`/puzzle/${id}`}
                 key={id}
                 className="w-56 p-4 hover:bg-sky-100"
               >

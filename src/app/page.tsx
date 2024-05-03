@@ -4,5 +4,5 @@ import { redirect } from 'next/navigation';
 export default async function Home() {
   const id = await getRandomPuzzleId();
 
-  return redirect(`/${id}`);
+  return redirect(`/puzzle/${id}`);
 }
