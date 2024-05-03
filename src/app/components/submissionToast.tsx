@@ -1,7 +1,7 @@
 import { Transition } from '@headlessui/react';
 import { CheckIcon, XMarkIcon } from '@heroicons/react/16/solid';
 import { Toast } from 'flowbite-react';
-import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 
 const SubmissionToast = ({
   isShowingSuccess,
@@ -14,8 +14,6 @@ const SubmissionToast = ({
   onSuccessDismiss: () => void;
   onFailureDismiss: () => void;
 }) => {
-  const pathname = usePathname();
-
   return (
     <>
       <Transition
@@ -33,12 +31,12 @@ const SubmissionToast = ({
             <CheckIcon className="size-5" />
           </div>
           <div className="ml-2 text-sm">You solved it!</div>
-          <a
+          <Link
             className="mx-1 rounded-lg p-1 text-sm font-medium text-cyan-600 hover:font-bold"
-            href={pathname}
+            href={'/puzzle/new'}
           >
-            Restart?
-          </a>
+            New puzzle?
+          </Link>
           <Toast.Toggle onDismiss={onSuccessDismiss} />
         </Toast>
       </Transition>
