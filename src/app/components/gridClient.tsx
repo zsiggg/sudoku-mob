@@ -10,7 +10,11 @@ import {
 import { CheckIcon, PlusIcon } from '@heroicons/react/16/solid';
 import SubmissionToast from './submissionToast';
 import { Dropdown } from 'flowbite-react';
-import { addPuzzle, getPuzzleIds } from '../utils/supabase/puzzlesDb';
+import {
+  addPuzzle,
+  checkIsPuzzleInDb,
+  getPuzzleIds,
+} from '../utils/supabase/puzzlesDb';
 import Link from 'next/link';
 import { revalidateRootPath } from '../utils/helper';
 
@@ -89,8 +93,11 @@ const GridClient = ({
       setShowFailureToast(false);
       setShowSuccessToast(true);
       if (puzzle_id === undefined) {
-        await addPuzzle(puzzle);
-        setShowAddedToDbToast(true);
+        const isPuzzleInDb = await checkIsPuzzleInDb(puzzle);
+        if (!isPuzzleInDb) {
+          await addPuzzle(puzzle);
+          setShowAddedToDbToast(true);
+        }
       }
     } else {
       setShowFailureToast(true);
