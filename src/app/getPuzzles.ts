@@ -22,26 +22,19 @@ export const getPuzzleCount = async () => {
   return count;
 };
 
-export const getRandomPuzzle = async () => {
-  const count = (await getPuzzleCount()) ?? 0;
-  const idx = Math.round(Math.random() * (count - 1));
-
-  const supabase = createClient();
-  const { data, error } = await supabase
-    .from('sudoku_puzzles')
-    .select('puzzle')
-    .range(idx, idx);
-  if (error) throw error;
-
-  return data[0].puzzle;
-};
-
 export const getPuzzleIds = async () => {
   const supabase = createClient();
   const { data, error } = await supabase.from('sudoku_puzzles').select('id');
   if (error) throw error;
 
   return data.map((row) => row.id);
+};
+
+export const getRandomPuzzleId = async () => {
+  const ids = await getPuzzleIds();
+  const i = Math.round(Math.random() * (ids.length - 1));
+
+  return ids[i];
 };
 
 export const getPuzzle = async (id: string) => {
