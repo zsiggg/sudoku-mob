@@ -257,7 +257,7 @@ const GridClient = ({
             </Dropdown.Item>
             <Dropdown.Item
               as={Link}
-              href={`/`}
+              href={`/puzzle`}
               onClick={() => revalidateRootPath()}
               className="w-56 p-4 hover:bg-sky-100"
             >
