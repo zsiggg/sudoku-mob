@@ -249,11 +249,19 @@ const GridClient = ({
             </Dropdown.Header>
             <Dropdown.Item
               as={Link}
+              href={`/puzzle/new`}
+              onClick={() => revalidateRootPath()}
+              className="w-56 p-4 hover:bg-sky-100"
+            >
+              New Puzzle
+            </Dropdown.Item>
+            <Dropdown.Item
+              as={Link}
               href={`/`}
               onClick={() => revalidateRootPath()}
               className="w-56 p-4 hover:bg-sky-100"
             >
-              Random Puzzle
+              Random from database
             </Dropdown.Item>
             <Suspense
               fallback={
