@@ -17,6 +17,7 @@ import {
 } from '../utils/supabase/puzzlesDb';
 import Link from 'next/link';
 import { revalidateRootPath } from '../utils/helper';
+import { useMediaQuery } from 'react-responsive';
 
 const GridClient = ({
   puzzle,
@@ -25,6 +26,8 @@ const GridClient = ({
   puzzle: string;
   puzzle_id?: string;
 }) => {
+  const isMobile = useMediaQuery({ query: '(max-width: 1023px)' });
+
   const [puzzleRowNumber, setPuzzleRowNumber] = useState<number>();
 
   const [showSuccessToast, setShowSuccessToast] = useState(false);
@@ -150,6 +153,12 @@ const GridClient = ({
     }
   };
 
+  const onMobileTouch = (i: number) => {
+    setClickedIdx(i);
+    unhighlightAllCells();
+    highlightRowColOfCell(i);
+  };
+
   const dropdownRef = useRef(new Promise<JSX.Element>(() => {}));
   useEffect(() => {
     dropdownRef.current = getPuzzleIds()
@@ -230,9 +239,21 @@ const GridClient = ({
                 key={i}
                 tabIndex={i}
                 className={`flex size-full items-center justify-center ${borderClasses} ${validDigits[i] ? 'text-sky-800/50' : 'text-red-600/50'} ${clickedIdx === i ? 'bg-sky-800/50' : isHighlightedArr[i] ? 'bg-sky-800/25' : ''}`}
-                onMouseEnter={() => onHover(i)}
-                onFocus={() => onFocus(i)}
-                onBlur={onBlur}
+                onMouseEnter={() => (!isMobile ? onHover(i) : undefined)}
+                onTouchStart={() => onMobileTouch(i)}
+                onTouchMove={(e) => {
+                  const i = document
+                    .elementFromPoint(
+                      e.touches[0].clientX,
+                      e.touches[0].clientY,
+                    )
+                    ?.getAttribute('tabIndex');
+                  if (i !== null && i !== undefined) {
+                    onMobileTouch(parseInt(i));
+                  }
+                }}
+                onFocus={() => (!isMobile ? onFocus(i) : undefined)}
+                onBlur={!isMobile ? onBlur : undefined}
               >
                 {digits[i]}
               </div>
@@ -246,12 +267,44 @@ const GridClient = ({
                 step={1}
                 className={`flex items-center justify-center ${borderClasses} bg-inherit text-center ${validDigits[i] ? '' : 'text-red-600'} ${clickedIdx === i ? 'bg-sky-800/50' : isHighlightedArr[i] ? 'bg-sky-800/25' : ''}`}
                 onInput={(e) => onDigitInput(i, e)}
-                onMouseEnter={() => onHover(i)}
-                onFocus={() => onFocus(i)}
-                onBlur={onBlur}
+                onMouseEnter={() => (!isMobile ? onHover(i) : undefined)}
+                onTouchStart={() => onMobileTouch(i)}
+                onTouchMove={(e) => {
+                  const i = document
+                    .elementFromPoint(
+                      e.touches[0].clientX,
+                      e.touches[0].clientY,
+                    )
+                    ?.getAttribute('tabIndex');
+                  if (i !== null && i !== undefined) {
+                    onMobileTouch(parseInt(i));
+                  }
+                }}
+                onFocus={() => (!isMobile ? onFocus(i) : undefined)}
+                onBlur={!isMobile ? onBlur : undefined}
               />
             );
           })}
+        </div>
+        <div className="flex w-full flex-wrap items-center justify-evenly lg:hidden">
+          {Array.from({ length: 9 }, (_, i) => (
+            <button
+              className="m-1 size-14 rounded-md bg-sky-100 text-sky-800 hover:bg-sky-200 hover:text-sky-900 md:mx-2"
+              key={i + 1}
+              onClick={() => {
+                if (clickedIdx !== null) {
+                  const element = document.querySelector(
+                    `input[tabindex="${clickedIdx}"]`,
+                  );
+                  if (element) {
+                    element.value = (i + 1).toString();
+                  }
+                }
+              }}
+            >
+              {i + 1}
+            </button>
+          ))}
         </div>
         <div className="flex items-center justify-center gap-5">
           <Dropdown
