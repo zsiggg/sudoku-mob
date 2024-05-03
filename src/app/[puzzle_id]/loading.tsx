@@ -1,4 +1,4 @@
-const SuspenseFallback = () => {
+const PuzzleLoading = () => {
   return (
     <div className="flex h-screen items-center justify-center">
       <p>Getting your puzzle...</p>
@@ -6,4 +6,4 @@ const SuspenseFallback = () => {
   );
 };
 
-export default SuspenseFallback;
+export default PuzzleLoading;

@@ -167,10 +167,6 @@ const Grid = ({
     ));
   }, [puzzle_id]);
 
-  useEffect(() => {
-    revalidateRootPath();
-  }, []);
-
   return (
     <>
       <SubmissionToast
@@ -239,6 +235,7 @@ const Grid = ({
             <Dropdown.Item
               as={Link}
               href={`/`}
+              onClick={() => revalidateRootPath()}
               className="w-56 p-4 hover:bg-sky-100"
             >
               Random Puzzle
