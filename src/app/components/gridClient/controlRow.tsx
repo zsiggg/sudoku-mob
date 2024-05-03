@@ -1,9 +1,9 @@
 import { CheckIcon, PlusIcon } from '@heroicons/react/16/solid';
 import { Dropdown } from 'flowbite-react';
-import { revalidateRootPath } from '../utils/helper';
+import { revalidateRootPath } from '../../utils/helper';
 import Link from 'next/link';
 
-const GridClientControlRow = ({
+const ControlRow = ({
   puzzleIds,
   puzzleId,
   emptyCellCount,
@@ -79,4 +79,4 @@ const GridClientControlRow = ({
   );
 };
 
-export default GridClientControlRow;
+export default ControlRow;

@@ -6,10 +6,10 @@ import {
   isValidSudoku,
   updateDigits,
   updateValidDigits,
-} from '../utils/gridClient/helper';
+} from '../../utils/gridClient/helper';
 import SubmissionToast from './submissionToast';
-import { addPuzzle, checkIsPuzzleInDb } from '../utils/supabase/puzzlesDb';
-import GridClientControlRow from './gridClientControlRow';
+import { addPuzzle, checkIsPuzzleInDb } from '../../utils/supabase/puzzlesDb';
+import GridClientControlRow from './controlRow';
 
 const GridClient = ({
   puzzle,
