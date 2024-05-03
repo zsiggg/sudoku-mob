@@ -1,13 +1,13 @@
 import { Suspense } from 'react';
-import GridServer from '../../components/gridServer';
+import PuzzleServer from '../../components/puzzleServer';
 import PuzzleLoading from './loading';
 
-export default function Home({ params }: { params: { puzzle_id: string } }) {
-  const { puzzle_id } = params;
+export default function Home({ params }: { params: { puzzleId: string } }) {
+  const { puzzleId } = params;
   return (
     <main className="flex h-screen flex-col items-center justify-between p-2">
       <Suspense fallback={<PuzzleLoading />}>
-        <GridServer puzzle_id={puzzle_id} />
+        <PuzzleServer puzzleId={puzzleId} />
       </Suspense>
     </main>
   );
