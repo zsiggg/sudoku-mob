@@ -12,6 +12,7 @@ import SubmissionToast from './submissionToast';
 import { Dropdown } from 'flowbite-react';
 import { getPuzzleIds } from './getPuzzles';
 import Link from 'next/link';
+import { revalidateRootPath } from './utils/helper';
 
 const Grid = ({
   puzzle,
@@ -165,6 +166,10 @@ const Grid = ({
       </>
     ));
   }, [puzzle_id]);
+
+  useEffect(() => {
+    revalidateRootPath();
+  }, []);
 
   return (
     <>
