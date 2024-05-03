@@ -228,6 +228,7 @@ const GridClient = ({
         </div>
         <div className="flex items-center justify-center gap-5">
           <Dropdown
+            className="max-h-96 overflow-y-auto"
             placement="top"
             label=""
             renderTrigger={() => (
