@@ -1,5 +1,5 @@
 import { getSudoku } from 'sudoku-gen';
-import GridClient from '../[puzzle_id]/components/gridClient';
+import GridClient from '../../components/gridClient';
 
 export default async function RandomNew() {
   const puzzle = getSudoku();
