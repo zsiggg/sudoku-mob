@@ -1,4 +1,4 @@
-import { revalidateRootPath } from '@/app/utils/helper';
+import { revalidateRootPath } from '@/app/utils/revalidation';
 import { PlusIcon } from '@heroicons/react/16/solid';
 import { Dropdown } from 'flowbite-react';
 import Link from 'next/link';
