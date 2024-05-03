@@ -16,14 +16,14 @@ import { revalidateRootPath } from '../utils/helper';
 
 const GridClient = ({
   puzzle,
-  puzzle_ids,
-  puzzle_id,
-  puzzle_row_number,
+  puzzleIds,
+  puzzleId,
+  puzzleRowNum,
 }: {
   puzzle: string;
-  puzzle_ids: string[];
-  puzzle_id?: string;
-  puzzle_row_number?: number;
+  puzzleIds: string[];
+  puzzleId?: string;
+  puzzleRowNum?: number;
 }) => {
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [showFailureToast, setShowFailureToast] = useState(false);
@@ -92,7 +92,7 @@ const GridClient = ({
     if (isValid) {
       setShowFailureToast(false);
       setShowSuccessToast(true);
-      if (puzzle_id === undefined) {
+      if (puzzleId === undefined) {
         const isPuzzleInDb = await checkIsPuzzleInDb(puzzle);
         if (!isPuzzleInDb) {
           await addPuzzle(puzzle);
@@ -160,12 +160,12 @@ const GridClient = ({
       />
       <div className="flex h-full flex-col items-center justify-center space-y-5 text-xl md:p-10 lg:space-y-7 xl:p-5">
         <div className="text-center text-3xl text-sky-800">
-          {puzzle_id === undefined ? (
+          {puzzleId === undefined ? (
             <p>New Puzzle</p>
-          ) : puzzle_row_number === undefined ? (
+          ) : puzzleRowNum === undefined ? (
             <div className="ml-1 h-10 w-44 animate-pulse rounded-lg bg-sky-100"></div>
           ) : (
-            <p>{`Puzzle ${puzzle_row_number}`}</p>
+            <p>{`Puzzle ${puzzleRowNum}`}</p>
           )}
         </div>
         <div
@@ -241,9 +241,9 @@ const GridClient = ({
             >
               Random from database
             </Dropdown.Item>
-            {puzzle_ids.map((id, i) => (
+            {puzzleIds.map((id, i) => (
               <>
-                {id !== puzzle_id ? (
+                {id !== puzzleId ? (
                   <Dropdown.Item
                     as={Link}
                     href={`/puzzle/${id}`}

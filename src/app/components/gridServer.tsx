@@ -2,19 +2,17 @@ import { getPuzzle, getPuzzleIds } from '../utils/supabase/puzzlesDb';
 import GridClient from './gridClient';
 
 const GridServer = async ({
-  puzzle_id,
+  puzzleId,
   puzzle,
 }: {
-  puzzle_id?: string;
+  puzzleId?: string;
   puzzle?: string;
 }) => {
   const puzzlePromise =
-    puzzle_id !== undefined ? getPuzzle(puzzle_id) : Promise.resolve(puzzle);
+    puzzleId !== undefined ? getPuzzle(puzzleId) : Promise.resolve(puzzle);
   const puzzleIdsPromise = getPuzzleIds();
   const puzzleRowNumPromise = puzzleIdsPromise.then((puzzleIds) =>
-    puzzleIds.includes(puzzle_id)
-      ? puzzleIds.indexOf(puzzle_id) + 1
-      : undefined,
+    puzzleIds.includes(puzzleId) ? puzzleIds.indexOf(puzzleId) + 1 : undefined,
   );
 
   return Promise.all([
@@ -23,10 +21,10 @@ const GridServer = async ({
     puzzleRowNumPromise,
   ]).then(([puzzle, puzzleIds, puzzleRowNum]) => (
     <GridClient
-      puzzle_id={puzzle_id}
+      puzzleId={puzzleId}
       puzzle={puzzle}
-      puzzle_ids={puzzleIds}
-      puzzle_row_number={puzzleRowNum}
+      puzzleIds={puzzleIds}
+      puzzleRowNum={puzzleRowNum}
     />
   ));
 };
