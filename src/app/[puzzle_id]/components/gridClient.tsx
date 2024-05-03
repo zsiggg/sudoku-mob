@@ -6,7 +6,7 @@ import {
   isValidSudoku,
   updateDigits,
   updateValidDigits,
-} from '../../utils/grid/helper';
+} from '../../utils/gridClient/helper';
 import { CheckIcon, PlusIcon } from '@heroicons/react/16/solid';
 import SubmissionToast from './submissionToast';
 import { Dropdown } from 'flowbite-react';
@@ -14,7 +14,7 @@ import { getPuzzleIds } from '../../utils/supabase/getPuzzles';
 import Link from 'next/link';
 import { revalidateRootPath } from '../../utils/helper';
 
-const Grid = ({
+const GridClient = ({
   puzzle,
   puzzle_id,
 }: {
@@ -280,4 +280,4 @@ const Grid = ({
   );
 };
 
-export default Grid;
+export default GridClient;
