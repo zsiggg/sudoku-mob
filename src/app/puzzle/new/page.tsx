@@ -1,12 +1,13 @@
+import GridClient from '@/app/components/gridClient';
 import { getSudoku } from 'sudoku-gen';
-import GridClient from '../../components/gridClient';
 
 export default async function RandomNew() {
-  const puzzle = getSudoku();
+  const puzzleObj = getSudoku();
+  const puzzle = puzzleObj.puzzle.replace(/-/g, '.');
 
   return (
     <main className="flex h-screen flex-col items-center justify-between p-2">
-      <GridClient puzzle={puzzle.puzzle} />
+      <GridClient puzzle={puzzle} />
     </main>
   );
 }

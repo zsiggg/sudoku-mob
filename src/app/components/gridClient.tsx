@@ -10,7 +10,7 @@ import {
 import { CheckIcon, PlusIcon } from '@heroicons/react/16/solid';
 import SubmissionToast from './submissionToast';
 import { Dropdown } from 'flowbite-react';
-import { getPuzzleIds } from '../utils/supabase/puzzlesDb';
+import { addPuzzle, getPuzzleIds } from '../utils/supabase/puzzlesDb';
 import Link from 'next/link';
 import { revalidateRootPath } from '../utils/helper';
 
@@ -82,9 +82,12 @@ const GridClient = ({
     }
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     const isValid = isValidSudoku(digits);
     if (isValid) {
+      if (puzzle_id === undefined) {
+        await addPuzzle(puzzle);
+      }
       setShowFailureToast(false);
       setShowSuccessToast(true);
     } else {

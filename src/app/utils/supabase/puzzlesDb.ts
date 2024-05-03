@@ -28,3 +28,9 @@ export const getPuzzle = async (id: string) => {
 
   return data[0]['puzzle'];
 };
+
+export const addPuzzle = async (puzzle: string) => {
+  const supabase = createClient();
+  const { error } = await supabase.from('sudoku_puzzles').insert([{ puzzle }]);
+  if (error) throw error;
+};
