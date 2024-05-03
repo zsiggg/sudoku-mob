@@ -24,11 +24,19 @@ const SubmissionToast = ({
         appear={true}
         show={!!isShowingAddedToDb}
         enter="transition-transform transform-gpu duration-300 ease-out"
-        enterFrom="-translate-y-20"
+        enterFrom={
+          isShowingSuccess || isShowingFailure
+            ? '-translate-y-36'
+            : '-translate-y-20'
+        }
         enterTo="translate-y-0"
         leave="transition-transform transform-gpu duration-300 ease-out"
         leaveFrom="translate-y-0"
-        leaveTo="-translate-y-20"
+        leaveTo={
+          isShowingSuccess || isShowingFailure
+            ? '-translate-y-36'
+            : '-translate-y-20'
+        }
       >
         <Toast
           className={`fixed left-1/2 top-5 w-max -translate-x-1/2 ${isShowingSuccess || isShowingFailure ? 'translate-y-16' : 'translate-y-0'} transform-gpu bg-white p-2 transition-transform duration-300 ease-out`}
