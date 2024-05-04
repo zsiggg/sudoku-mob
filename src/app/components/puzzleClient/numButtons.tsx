@@ -21,7 +21,7 @@ const NumButtons = ({
       leaveFrom="translate-y-0 opacity-75"
       leaveTo="-translate-y-8 opacity-0"
     >
-      <div className="flex w-full flex-wrap items-center justify-evenly lg:hidden">
+      <div className="flex w-full flex-wrap items-center justify-evenly">
         {Array.from({ length: 9 }, (_, i) => (
           <button
             className="m-1 size-14 rounded-md bg-sky-100 text-sky-800 hover:bg-sky-200 hover:text-sky-900 md:mx-2"
