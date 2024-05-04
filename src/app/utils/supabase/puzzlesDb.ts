@@ -57,22 +57,28 @@ export const getPuzzleId = async (puzzle: string) => {
 
 export const updateMinMoves = async (id: string, moveCount: number) => {
   const supabase = createClient();
-  const { error: updateError } = await supabase
-    .from('sudoku_puzzles')
-    .update({ min_moves: moveCount })
-    .eq('id', id)
-    .or(`min_moves.is.null, min_moves.gt.${moveCount}`);
-  // .select();
-  // .select() not working to get updated record when chained after .or()
-  if (updateError) throw updateError;
 
-  // todo: return updated min_moves in better way
+  // todo: return if min_moves is updated in a better way
   const { data, error: selectError } = await supabase
     .from('sudoku_puzzles')
     .select('min_moves')
     .eq('id', id);
   if (selectError) throw selectError;
 
-  console.log(data);
-  return data[0].min_moves;
+  const { min_moves: currMinMoves } = data[0];
+
+  if (currMinMoves === null || moveCount < currMinMoves) {
+    const { error: updateError } = await supabase
+      .from('sudoku_puzzles')
+      .update({ min_moves: moveCount })
+      .eq('id', id)
+      .or(`min_moves.is.null, min_moves.gt.${moveCount}`);
+    // .select();
+    // .select() not working to get updated record when chained after .or()
+    if (updateError) throw updateError;
+
+    return true;
+  } else {
+    return false;
+  }
 };

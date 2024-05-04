@@ -33,6 +33,7 @@ const PuzzleClient = ({
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [showFailureToast, setShowFailureToast] = useState(false);
   const [showAddedToDbToast, setShowAddedToDbToast] = useState(false);
+  const [showNewMinScoreToast, setShowNewMinScoreToast] = useState(false);
 
   const isMobile = useMediaQuery({ query: '(max-width: 1023px)' });
   const [isShowingNumButtons, setIsShowingNumButtons] = useState(false);
@@ -68,12 +69,16 @@ const PuzzleClient = ({
           await addPuzzleAndMinMoves(puzzle, moveCount);
           setShowAddedToDbToast(true);
         } else {
-          const newMinMoves = await updateMinMoves(dbPuzzleId, moveCount);
-          console.log('newMinMoves', newMinMoves);
+          const isUpdated = await updateMinMoves(dbPuzzleId, moveCount);
+          if (isUpdated) {
+            setShowNewMinScoreToast(true);
+          }
         }
       } else {
-        const newMinMoves = await updateMinMoves(puzzleId, moveCount);
-        console.log('newMinMoves', newMinMoves);
+        const isUpdated = await updateMinMoves(puzzleId, moveCount);
+        if (isUpdated) {
+          setShowNewMinScoreToast(true);
+        }
       }
     } else {
       setShowFailureToast(true);
@@ -140,9 +145,11 @@ const PuzzleClient = ({
         isShowingSuccess={showSuccessToast}
         isShowingFailure={showFailureToast}
         isShowingAddedToDb={showAddedToDbToast}
+        isShowingNewMinScore={showNewMinScoreToast}
         onSuccessDismiss={() => setShowSuccessToast(false)}
         onFailureDismiss={() => setShowFailureToast(false)}
-        onAddedToDbDismiss={() => setShowAddedToDbToast(false)} // test
+        onAddedToDbDismiss={() => setShowAddedToDbToast(false)}
+        onNewMinScoreDismiss={() => setShowNewMinScoreToast(false)}
       />
       <div className="flex h-full flex-col items-center justify-center space-y-5 text-xl md:p-10 lg:space-y-7 xl:p-5">
         <Grid

@@ -1,5 +1,10 @@
 import { Transition } from '@headlessui/react';
-import { BoltIcon, CheckIcon, XMarkIcon } from '@heroicons/react/16/solid';
+import {
+  BoltIcon,
+  CheckIcon,
+  TrophyIcon,
+  XMarkIcon,
+} from '@heroicons/react/16/solid';
 import { Toast } from 'flowbite-react';
 import Link from 'next/link';
 
@@ -7,22 +12,56 @@ const SubmissionToast = ({
   isShowingSuccess,
   isShowingFailure,
   isShowingAddedToDb,
+  isShowingNewMinScore,
   onSuccessDismiss,
   onFailureDismiss,
   onAddedToDbDismiss,
+  onNewMinScoreDismiss,
 }: {
   isShowingSuccess: boolean;
   isShowingFailure: boolean;
-  isShowingAddedToDb?: boolean;
+  isShowingAddedToDb: boolean;
+  isShowingNewMinScore: boolean;
   onSuccessDismiss: () => void;
   onFailureDismiss: () => void;
-  onAddedToDbDismiss?: () => void;
+  onAddedToDbDismiss: () => void;
+  onNewMinScoreDismiss: () => void;
 }) => {
   return (
     <>
       <Transition
         appear={true}
-        show={!!isShowingAddedToDb}
+        show={isShowingNewMinScore}
+        enter="transition-transform transform-gpu duration-300 ease-out"
+        enterFrom={
+          isShowingSuccess || isShowingFailure
+            ? '-translate-y-36'
+            : '-translate-y-20'
+        }
+        enterTo="translate-y-0"
+        leave="transition-transform transform-gpu duration-300 ease-out"
+        leaveFrom="translate-y-0"
+        leaveTo={
+          isShowingSuccess || isShowingFailure
+            ? '-translate-y-36'
+            : '-translate-y-20'
+        }
+      >
+        <Toast
+          className={`fixed left-1/2 top-5 w-max -translate-x-1/2 ${isShowingSuccess || isShowingFailure ? 'translate-y-16' : 'translate-y-0'} transform-gpu bg-white p-2 transition-transform duration-300 ease-out`}
+        >
+          <div className="inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-yellow-100 text-yellow-500">
+            <TrophyIcon className="size-5" />
+          </div>
+          <div className="ml-2 mr-1 text-sm">
+            Congratulations! You beat the previous high score!
+          </div>
+          <Toast.Toggle onDismiss={onNewMinScoreDismiss} />
+        </Toast>
+      </Transition>
+      <Transition
+        appear={true}
+        show={!isShowingNewMinScore && isShowingAddedToDb}
         enter="transition-transform transform-gpu duration-300 ease-out"
         enterFrom={
           isShowingSuccess || isShowingFailure
@@ -45,7 +84,9 @@ const SubmissionToast = ({
             <BoltIcon className="size-5" />
           </div>
           <div className="ml-2 mr-1 text-sm">
-            Added new puzzle to the database!
+            {
+              "You're the first to solve this puzzle. It's been added to the database!"
+            }
           </div>
           <Toast.Toggle onDismiss={onAddedToDbDismiss} />
         </Toast>
