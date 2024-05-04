@@ -21,6 +21,8 @@ const Grid = ({
   isShowingNumButtons,
   onDigitInput,
   validDigits,
+  targetMoves,
+  moveCount,
 }: {
   gridRef: RefObject<HTMLDivElement>;
   puzzleId?: string;
@@ -36,6 +38,8 @@ const Grid = ({
   isShowingNumButtons: boolean;
   onDigitInput: (i: number, e: FormEvent<HTMLInputElement>) => void;
   validDigits: boolean[];
+  targetMoves: number | null;
+  moveCount: number;
 }) => {
   const initialIsHighlightedArr = Array.from({ length: 81 }, () => false);
   const [isHighlightedArr, setIsHighlightedArr] = useState(
@@ -111,19 +115,25 @@ const Grid = ({
   ]);
 
   return (
-    <>
-      <div className="text-center text-3xl text-sky-800">
-        {puzzleId === undefined ? (
-          <p>New Puzzle</p>
-        ) : puzzleRowNum === undefined ? (
-          <div className="ml-1 h-10 w-44 animate-pulse rounded-lg bg-sky-100"></div>
-        ) : (
-          <p>{`Puzzle ${puzzleRowNum}`}</p>
-        )}
+    <div className="lg:w-2/5 xl:w-1/2">
+      <div className="flex w-full justify-between p-2">
+        <div className="text-center text-3xl text-sky-800">
+          {puzzleId === undefined ? (
+            <p>New Puzzle</p>
+          ) : puzzleRowNum === undefined ? (
+            <div className="ml-1 h-10 w-44 animate-pulse rounded-lg bg-sky-100"></div>
+          ) : (
+            <p>{`Puzzle ${puzzleRowNum}`}</p>
+          )}
+        </div>
+        <div className="flex flex-col text-sm">
+          <div>Moves: {moveCount}</div>
+          <div>Target: {targetMoves ?? '-'}</div>
+        </div>
       </div>
       <div
         ref={gridRef}
-        className="grid aspect-square w-full grid-cols-9 grid-rows-9 border-2 border-sky-950 lg:w-2/5 xl:w-1/2"
+        className="grid aspect-square w-full grid-cols-9 grid-rows-9 border-2 border-sky-950 "
         onMouseLeave={onNoHover}
       >
         {initialDigits.map((digit, i) => {
@@ -197,7 +207,7 @@ const Grid = ({
           );
         })}
       </div>
-    </>
+    </div>
   );
 };
 
