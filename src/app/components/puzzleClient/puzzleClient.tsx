@@ -92,7 +92,7 @@ const PuzzleClient = ({
           isShowingNumButtons={isShowingNumButtons}
           setIsShowingNumButtons={setIsShowingNumButtons}
         />
-        {<NumButtons clickedIdx={clickedIdx} isShowing={isShowingNumButtons} />}
+        <NumButtons clickedIdx={clickedIdx} isShowing={isShowingNumButtons} />
       </div>
     </>
   );
