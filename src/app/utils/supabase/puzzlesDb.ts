@@ -4,7 +4,10 @@ import { createClient } from '@/app/utils/supabase/createSupabaseClient/server';
 
 export const getPuzzleIds = async () => {
   const supabase = createClient();
-  const { data, error } = await supabase.from('sudoku_puzzles').select('id');
+  const { data, error } = await supabase
+    .from('sudoku_puzzles')
+    .select('id')
+    .order('row_num', { ascending: true });
   if (error) throw error;
 
   return data.map((row) => row.id);
