@@ -14,10 +14,14 @@ const PuzzleServer = async ({
   const puzzlePromise =
     puzzleId !== undefined
       ? getPuzzleAndMinMoves(puzzleId)
-      : Promise.resolve({ puzzle: puzzle, min_moves: null });
+      : puzzle !== undefined
+        ? Promise.resolve({ puzzle: puzzle, min_moves: null })
+        : Promise.reject('No puzzleId or puzzle provided');
   const puzzleIdsPromise = getPuzzleIds();
   const puzzleRowNumPromise = puzzleIdsPromise.then((puzzleIds) =>
-    puzzleIds.includes(puzzleId) ? puzzleIds.indexOf(puzzleId) + 1 : undefined,
+    puzzleIds.includes(puzzleId ?? '')
+      ? puzzleIds.indexOf(puzzleId ?? '') + 1
+      : undefined,
   );
 
   return Promise.all([
