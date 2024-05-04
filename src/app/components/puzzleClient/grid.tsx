@@ -143,14 +143,13 @@ const Grid = ({
 
   useEffect(() => {
     if (prevIsShowingNumButtons !== isShowingNumButtons) {
-      if (isMobile && !isShowingNumButtons) {
+      if (!isShowingNumButtons) {
         setClickedIdx(null);
         unhighlightAllCells();
       }
       setPrevIsShowingNumButtons(isShowingNumButtons);
     }
   }, [
-    isMobile,
     isShowingNumButtons,
     prevIsShowingNumButtons,
     setClickedIdx,
@@ -234,7 +233,7 @@ const Grid = ({
               }}
               onFocus={() => onFocus(i)}
               onBlur={
-                isMobile && isShowingNumButtons
+                isShowingNumButtons
                   ? undefined
                   : isMobile
                     ? onMobileBlur
