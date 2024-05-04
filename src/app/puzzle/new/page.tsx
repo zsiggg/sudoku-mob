@@ -6,7 +6,7 @@ export default async function RandomNew() {
   const puzzle = puzzleObj.puzzle.replace(/-/g, '.');
 
   return (
-    <main className="flex h-screen flex-col items-center justify-between p-2">
+    <main className="flex min-h-screen flex-col items-center justify-between p-2">
       <PuzzleServer puzzle={puzzle} />
     </main>
   );

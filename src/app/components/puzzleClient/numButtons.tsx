@@ -1,14 +1,20 @@
 import { Transition } from '@headlessui/react';
-import { RefObject } from 'react';
+import { FormEvent, RefObject } from 'react';
 
 const NumButtons = ({
   isShowing,
   clickedIdx,
   gridRef,
+  onDigitInput,
 }: {
   isShowing: boolean;
   clickedIdx: number | null;
   gridRef: RefObject<HTMLDivElement>;
+  onDigitInput: (
+    i: number,
+    e?: FormEvent<HTMLInputElement>,
+    value?: string,
+  ) => void;
 }) => {
   return (
     <Transition
@@ -33,9 +39,10 @@ const NumButtons = ({
                 const targetInputElement = inputElements?.namedItem(
                   `grid-cell-${clickedIdx}`,
                 );
-                console.log(targetInputElement);
                 if (targetInputElement) {
-                  targetInputElement.value = (i + 1).toString();
+                  const digitStr = (i + 1).toString();
+                  targetInputElement.value = digitStr;
+                  onDigitInput(clickedIdx, undefined, digitStr);
                 }
               }
             }}

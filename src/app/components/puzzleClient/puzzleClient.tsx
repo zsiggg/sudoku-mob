@@ -1,7 +1,11 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { isValidSudoku } from '../../utils/puzzleClient/helper';
+import { FormEvent, useEffect, useRef, useState } from 'react';
+import {
+  isValidSudoku,
+  updateDigits,
+  updateValidDigits,
+} from '../../utils/puzzleClient/helper';
 import SubmissionToast from './submissionToast';
 import { addPuzzle, checkIsPuzzleInDb } from '../../utils/supabase/puzzlesDb';
 import ControlRow from './controlRow';
@@ -37,7 +41,14 @@ const PuzzleClient = ({
   const [emptyCellCount, setEmptyCellCount] = useState(initialEmptyCellCount);
   const [digits, setDigits] = useState(initialDigits);
 
+  // assume puzzle is valid (no duplicate digits in rows, cols, or boxes)
+  const [validDigits, setValidDigits] = useState(
+    Array.from({ length: digits.length }, () => true),
+  );
+
   const [clickedIdx, setClickedIdx] = useState<number | null>(null);
+
+  const [moveCount, setMoveCount] = useState(0);
 
   const gridRef = useRef<HTMLDivElement>(null);
 
@@ -57,6 +68,54 @@ const PuzzleClient = ({
       setShowFailureToast(true);
       setTimeout(() => setShowFailureToast(false), 5000);
       setShowSuccessToast(false);
+    }
+  };
+
+  const onDigitInput = (
+    i: number,
+    e?: FormEvent<HTMLInputElement>,
+    value?: string,
+  ) => {
+    const digitStr = e?.currentTarget.value ?? value ?? '';
+    const digit = parseInt(digitStr);
+    const prevDigit = digits[i];
+
+    if (digitStr == '') {
+      // store empty string if user backspaces
+      const newDigits = updateDigits(i, '', digits, setDigits);
+      updateValidDigits(
+        i,
+        '',
+        prevDigit,
+        validDigits,
+        setValidDigits,
+        newDigits,
+      );
+
+      setEmptyCellCount(emptyCellCount + 1);
+    } else if (digitStr.length == 1 && digit >= 1 && digit <= 9) {
+      // store valid digit
+      const newDigits = updateDigits(i, digit.toString(), digits, setDigits);
+      updateValidDigits(
+        i,
+        digit.toString(),
+        prevDigit,
+        validDigits,
+        setValidDigits,
+        newDigits,
+      );
+
+      setMoveCount(moveCount + 1);
+
+      // if cell was previously empty before valid digit was input
+      if (prevDigit === '') {
+        setEmptyCellCount(emptyCellCount - 1);
+      }
+    } else {
+      // don't change input if other characters are input
+      if (e) {
+        e.currentTarget.value = digits[i];
+      }
     }
   };
 
@@ -89,6 +148,9 @@ const PuzzleClient = ({
           isMobile={isMobile}
           isShowingNumButtons={isShowingNumButtons}
           targetMoves={targetMoves}
+          onDigitInput={onDigitInput}
+          validDigits={validDigits}
+          moveCount={moveCount}
         />
         <ControlRow
           puzzleIds={puzzleIds}
@@ -102,6 +164,7 @@ const PuzzleClient = ({
           clickedIdx={clickedIdx}
           isShowing={isShowingNumButtons}
           gridRef={gridRef}
+          onDigitInput={onDigitInput}
         />
       </div>
     </>
