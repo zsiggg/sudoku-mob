@@ -173,7 +173,7 @@ const Grid = ({
               max={9}
               min={0}
               step={1}
-              className={`flex items-center justify-center ${borderClasses} bg-inherit text-center ${validDigits[i] ? '' : 'text-red-600'} ${clickedIdx === i ? 'bg-sky-800/50' : isHighlightedArr[i] ? 'bg-sky-800/25' : ''}`}
+              className={`flex items-center justify-center caret-transparent ${borderClasses} bg-inherit text-center ${validDigits[i] ? '' : 'text-red-600'} ${clickedIdx === i ? 'bg-sky-800/50' : isHighlightedArr[i] ? 'bg-sky-800/25' : ''}`}
               onInput={(e) => onDigitInput(i, e)}
               onMouseEnter={() => onHover(i)}
               onTouchStart={() => onFocus(i)}
