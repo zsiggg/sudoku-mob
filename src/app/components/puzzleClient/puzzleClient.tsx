@@ -14,11 +14,13 @@ const PuzzleClient = ({
   puzzleIds,
   puzzleId,
   puzzleRowNum,
+  targetMoves,
 }: {
   puzzle: string;
   puzzleIds: string[];
   puzzleId?: string;
   puzzleRowNum?: number;
+  targetMoves: number | null;
 }) => {
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [showFailureToast, setShowFailureToast] = useState(false);
@@ -86,6 +88,7 @@ const PuzzleClient = ({
           setClickedIdx={setClickedIdx}
           isMobile={isMobile}
           isShowingNumButtons={isShowingNumButtons}
+          targetMoves={targetMoves}
         />
         <ControlRow
           puzzleIds={puzzleIds}

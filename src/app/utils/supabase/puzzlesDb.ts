@@ -17,16 +17,16 @@ export const getRandomPuzzleId = async () => {
   return ids[i];
 };
 
-export const getPuzzle = async (id: string) => {
+export const getPuzzleAndMinMoves = async (id: string) => {
   const supabase = createClient();
   const { data, error } = await supabase
     .from('sudoku_puzzles')
-    .select('puzzle')
+    .select('puzzle, min_moves')
     .eq('id', id)
     .limit(1);
   if (error) throw error;
 
-  return data[0]['puzzle'];
+  return data[0];
 };
 
 export const addPuzzle = async (puzzle: string) => {

@@ -26,6 +26,7 @@ const Grid = ({
   setClickedIdx,
   isMobile,
   isShowingNumButtons,
+  targetMoves,
 }: {
   gridRef: RefObject<HTMLDivElement>;
   puzzleId?: string;
@@ -39,6 +40,7 @@ const Grid = ({
   setClickedIdx: Dispatch<SetStateAction<number | null>>;
   isMobile: boolean;
   isShowingNumButtons: boolean;
+  targetMoves: number | null;
 }) => {
   const initialIsHighlightedArr = Array.from({ length: 81 }, () => false);
   const [isHighlightedArr, setIsHighlightedArr] = useState(
@@ -175,7 +177,7 @@ const Grid = ({
         </div>
         <div className="flex flex-col text-sm">
           <div>Moves: {moveCount}</div>
-          <div>Target: -</div>
+          <div>Target: {targetMoves ?? '-'}</div>
         </div>
       </div>
       <div
