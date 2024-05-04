@@ -3,9 +3,16 @@ import {
   updateDigits,
   updateValidDigits,
 } from '@/app/utils/puzzleClient/helper';
-import { Dispatch, FormEvent, SetStateAction, useState } from 'react';
+import {
+  Dispatch,
+  FormEvent,
+  RefObject,
+  SetStateAction,
+  useState,
+} from 'react';
 
 const Grid = ({
+  gridRef,
   puzzleId,
   puzzleRowNum,
   initialDigits,
@@ -18,6 +25,7 @@ const Grid = ({
   isMobile,
   isShowingNumButtons,
 }: {
+  gridRef: RefObject<HTMLDivElement>;
   puzzleId?: string;
   puzzleRowNum?: number;
   initialDigits: string[];
@@ -133,6 +141,7 @@ const Grid = ({
         )}
       </div>
       <div
+        ref={gridRef}
         className="grid aspect-square w-full grid-cols-9 grid-rows-9 border-2 border-sky-950 lg:w-2/5 xl:w-1/2"
         onMouseLeave={onNoHover}
       >
@@ -170,6 +179,7 @@ const Grid = ({
           ) : (
             <input
               type="text"
+              id={`grid-cell-${i}`} // to select correct <input> in numButtons.tsx
               key={i}
               tabIndex={i}
               max={9}

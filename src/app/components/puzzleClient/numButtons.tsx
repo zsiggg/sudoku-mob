@@ -1,11 +1,14 @@
 import { Transition } from '@headlessui/react';
+import { RefObject } from 'react';
 
 const NumButtons = ({
   isShowing,
   clickedIdx,
+  gridRef,
 }: {
   isShowing: boolean;
   clickedIdx: number | null;
+  gridRef: RefObject<HTMLDivElement>;
 }) => {
   return (
     <Transition
@@ -25,11 +28,13 @@ const NumButtons = ({
             key={i + 1}
             onClick={() => {
               if (clickedIdx !== null) {
-                const element = document.querySelector(
-                  `input[tabindex="${clickedIdx}"]`,
+                const inputElements =
+                  gridRef.current?.getElementsByTagName('input');
+                const targetInputElement = inputElements?.namedItem(
+                  `grid-cell-${clickedIdx}`,
                 );
-                if (element) {
-                  element.value = (i + 1).toString();
+                if (targetInputElement) {
+                  targetInputElement.value = (i + 1).toString();
                 }
               }
             }}

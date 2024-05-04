@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { isValidSudoku } from '../../utils/puzzleClient/helper';
 import SubmissionToast from './submissionToast';
 import { addPuzzle, checkIsPuzzleInDb } from '../../utils/supabase/puzzlesDb';
@@ -37,6 +37,8 @@ const PuzzleClient = ({
 
   const [clickedIdx, setClickedIdx] = useState<number | null>(null);
 
+  const gridRef = useRef<HTMLDivElement>(null);
+
   const onSubmit = async () => {
     const isValid = isValidSudoku(digits);
     if (isValid) {
@@ -72,6 +74,7 @@ const PuzzleClient = ({
       />
       <div className="flex h-full flex-col items-center justify-center space-y-5 text-xl md:p-10 lg:space-y-7 xl:p-5">
         <Grid
+          gridRef={gridRef}
           puzzleId={puzzleId}
           puzzleRowNum={puzzleRowNum}
           initialDigits={initialDigits}
@@ -92,7 +95,11 @@ const PuzzleClient = ({
           isShowingNumButtons={isShowingNumButtons}
           setIsShowingNumButtons={setIsShowingNumButtons}
         />
-        <NumButtons clickedIdx={clickedIdx} isShowing={isShowingNumButtons} />
+        <NumButtons
+          clickedIdx={clickedIdx}
+          isShowing={isShowingNumButtons}
+          gridRef={gridRef}
+        />
       </div>
     </>
   );
