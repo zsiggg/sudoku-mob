@@ -129,6 +129,11 @@ const Grid = ({
     }
   };
 
+  const onMobileBlur = () => {
+    setClickedIdx(null);
+    unhighlightAllCells();
+  };
+
   return (
     <>
       <div className="text-center text-3xl text-sky-800">
@@ -172,7 +177,13 @@ const Grid = ({
                 }
               }}
               onFocus={() => onFocus(i)}
-              onBlur={!isMobile ? onBlur : undefined}
+              onBlur={
+                isMobile && isShowingNumButtons
+                  ? undefined
+                  : isMobile
+                    ? onMobileBlur
+                    : onBlur
+              }
             >
               {digits[i]}
             </div>
@@ -198,7 +209,13 @@ const Grid = ({
                 }
               }}
               onFocus={() => onFocus(i)}
-              onBlur={isMobile && isShowingNumButtons ? undefined : onBlur}
+              onBlur={
+                isMobile && isShowingNumButtons
+                  ? undefined
+                  : isMobile
+                    ? onMobileBlur
+                    : onBlur
+              }
               readOnly={isMobile && isShowingNumButtons}
             />
           );
