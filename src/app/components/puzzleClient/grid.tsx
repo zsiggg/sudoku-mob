@@ -117,11 +117,6 @@ const Grid = ({
     }
   };
 
-  const onMobileTouch = (i: number) => {
-    setClickedIdx(i);
-    highlightRowColOfCell(i);
-  };
-
   return (
     <>
       <div className="text-center text-3xl text-sky-800">
@@ -153,17 +148,17 @@ const Grid = ({
               key={i}
               tabIndex={i}
               className={`flex size-full items-center justify-center ${borderClasses} ${validDigits[i] ? 'text-sky-800/50' : 'text-red-600/50'} ${clickedIdx === i ? 'bg-sky-800/50' : isHighlightedArr[i] ? 'bg-sky-800/25' : ''}`}
-              onMouseEnter={() => (!isMobile ? onHover(i) : undefined)}
-              onTouchStart={() => onMobileTouch(i)}
+              onMouseEnter={() => onHover(i)}
+              onTouchStart={() => onFocus(i)}
               onTouchMove={(e) => {
                 const i = document
                   .elementFromPoint(e.touches[0].clientX, e.touches[0].clientY)
                   ?.getAttribute('tabIndex');
                 if (i !== null && i !== undefined) {
-                  onMobileTouch(parseInt(i));
+                  onFocus(parseInt(i));
                 }
               }}
-              onFocus={() => (!isMobile ? onFocus(i) : undefined)}
+              onFocus={() => onFocus(i)}
               onBlur={!isMobile ? onBlur : undefined}
             >
               {digits[i]}
@@ -178,17 +173,17 @@ const Grid = ({
               step={1}
               className={`flex items-center justify-center ${borderClasses} bg-inherit text-center ${validDigits[i] ? '' : 'text-red-600'} ${clickedIdx === i ? 'bg-sky-800/50' : isHighlightedArr[i] ? 'bg-sky-800/25' : ''}`}
               onInput={(e) => onDigitInput(i, e)}
-              onMouseEnter={() => (!isMobile ? onHover(i) : undefined)}
-              onTouchStart={() => onMobileTouch(i)}
+              onMouseEnter={() => onHover(i)}
+              onTouchStart={() => onFocus(i)}
               onTouchMove={(e) => {
                 const i = document
                   .elementFromPoint(e.touches[0].clientX, e.touches[0].clientY)
                   ?.getAttribute('tabIndex');
                 if (i !== null && i !== undefined) {
-                  onMobileTouch(parseInt(i));
+                  onFocus(parseInt(i));
                 }
               }}
-              onFocus={() => (!isMobile ? onFocus(i) : undefined)}
+              onFocus={() => onFocus(i)}
               onBlur={!isMobile ? onBlur : undefined}
             />
           );
