@@ -82,6 +82,7 @@ const PuzzleClient = ({
           clickedIdx={clickedIdx}
           setClickedIdx={setClickedIdx}
           isMobile={isMobile}
+          isShowingNumButtons={isShowingNumButtons}
         />
         <ControlRow
           puzzleIds={puzzleIds}

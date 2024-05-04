@@ -16,6 +16,7 @@ const Grid = ({
   clickedIdx,
   setClickedIdx,
   isMobile,
+  isShowingNumButtons,
 }: {
   puzzleId?: string;
   puzzleRowNum?: number;
@@ -27,6 +28,7 @@ const Grid = ({
   clickedIdx: number | null;
   setClickedIdx: Dispatch<SetStateAction<number | null>>;
   isMobile: boolean;
+  isShowingNumButtons: boolean;
 }) => {
   const initialIsHighlightedArr = Array.from({ length: 81 }, () => false);
   const [isHighlightedArr, setIsHighlightedArr] = useState(
@@ -186,7 +188,8 @@ const Grid = ({
                 }
               }}
               onFocus={() => onFocus(i)}
-              onBlur={!isMobile ? onBlur : undefined}
+              onBlur={isMobile && isShowingNumButtons ? undefined : onBlur}
+              readOnly={isMobile && isShowingNumButtons}
             />
           );
         })}
