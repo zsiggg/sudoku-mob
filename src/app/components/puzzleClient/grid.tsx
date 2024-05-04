@@ -1,8 +1,4 @@
-import {
-  getRowColBoxIdxs,
-  updateDigits,
-  updateValidDigits,
-} from '@/app/utils/puzzleClient/helper';
+import { getRowColBoxIdxs } from '@/app/utils/puzzleClient/helper';
 import {
   Dispatch,
   FormEvent,
@@ -19,13 +15,12 @@ const Grid = ({
   puzzleRowNum,
   initialDigits,
   digits,
-  setDigits,
-  emptyCellCount,
-  setEmptyCellCount,
   clickedIdx,
   setClickedIdx,
   isMobile,
   isShowingNumButtons,
+  onDigitInput,
+  validDigits,
 }: {
   gridRef: RefObject<HTMLDivElement>;
   puzzleId?: string;
@@ -39,6 +34,8 @@ const Grid = ({
   setClickedIdx: Dispatch<SetStateAction<number | null>>;
   isMobile: boolean;
   isShowingNumButtons: boolean;
+  onDigitInput: (i: number, e: FormEvent<HTMLInputElement>) => void;
+  validDigits: boolean[];
 }) => {
   const initialIsHighlightedArr = Array.from({ length: 81 }, () => false);
   const [isHighlightedArr, setIsHighlightedArr] = useState(
@@ -46,53 +43,9 @@ const Grid = ({
   );
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
-  // assume puzzle is valid (no duplicate digits in rows, cols, or boxes)
-  const [validDigits, setValidDigits] = useState(
-    Array.from({ length: digits.length }, () => true),
-  );
-
   // keep track of previous values of isShowingNumButtons, so that we can determine when it changes in useEffect
   const [prevIsShowingNumButtons, setPrevIsShowingNumButtons] =
     useState(isShowingNumButtons);
-
-  const onDigitInput = (i: number, e: FormEvent<HTMLInputElement>) => {
-    const digit = parseInt(e.currentTarget.value);
-    const prevDigit = digits[i];
-
-    if (e.currentTarget.value == '') {
-      // store empty string if user backspaces
-      const newDigits = updateDigits(i, '', digits, setDigits);
-      updateValidDigits(
-        i,
-        '',
-        prevDigit,
-        validDigits,
-        setValidDigits,
-        newDigits,
-      );
-
-      setEmptyCellCount(emptyCellCount + 1);
-    } else if (e.currentTarget.value.length == 1 && digit >= 1 && digit <= 9) {
-      // store valid digit
-      const newDigits = updateDigits(i, digit.toString(), digits, setDigits);
-      updateValidDigits(
-        i,
-        digit.toString(),
-        prevDigit,
-        validDigits,
-        setValidDigits,
-        newDigits,
-      );
-
-      // if new digit was input
-      if (prevDigit === '') {
-        setEmptyCellCount(emptyCellCount - 1);
-      }
-    } else {
-      // don't change input if other characters are input
-      e.currentTarget.value = digits[i];
-    }
-  };
 
   const highlightRowColOfCell = (i: number) => {
     const rowColBoxIdxs = getRowColBoxIdxs(i);

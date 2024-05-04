@@ -33,7 +33,6 @@ const NumButtons = ({
                 const targetInputElement = inputElements?.namedItem(
                   `grid-cell-${clickedIdx}`,
                 );
-                console.log(targetInputElement);
                 if (targetInputElement) {
                   targetInputElement.value = (i + 1).toString();
                 }
