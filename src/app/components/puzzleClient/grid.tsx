@@ -4,7 +4,6 @@ import {
   updateValidDigits,
 } from '@/app/utils/puzzleClient/helper';
 import { Dispatch, FormEvent, SetStateAction, useState } from 'react';
-import { useMediaQuery } from 'react-responsive';
 
 const Grid = ({
   puzzleId,
@@ -14,6 +13,9 @@ const Grid = ({
   setDigits,
   emptyCellCount,
   setEmptyCellCount,
+  clickedIdx,
+  setClickedIdx,
+  isMobile,
 }: {
   puzzleId?: string;
   puzzleRowNum?: number;
@@ -22,15 +24,15 @@ const Grid = ({
   setDigits: Dispatch<SetStateAction<string[]>>;
   emptyCellCount: number;
   setEmptyCellCount: Dispatch<SetStateAction<number>>;
+  clickedIdx: number | null;
+  setClickedIdx: Dispatch<SetStateAction<number | null>>;
+  isMobile: boolean;
 }) => {
-  const isMobile = useMediaQuery({ query: '(max-width: 1023px)' });
-
   const initialIsHighlightedArr = Array.from({ length: 81 }, () => false);
   const [isHighlightedArr, setIsHighlightedArr] = useState(
     initialIsHighlightedArr,
   );
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
-  const [clickedIdx, setClickedIdx] = useState<number | null>(null);
 
   // assume puzzle is valid (no duplicate digits in rows, cols, or boxes)
   const [validDigits, setValidDigits] = useState(
@@ -188,26 +190,6 @@ const Grid = ({
             />
           );
         })}
-      </div>
-      <div className="flex w-full flex-wrap items-center justify-evenly lg:hidden">
-        {Array.from({ length: 9 }, (_, i) => (
-          <button
-            className="m-1 size-14 rounded-md bg-sky-100 text-sky-800 hover:bg-sky-200 hover:text-sky-900 md:mx-2"
-            key={i + 1}
-            onClick={() => {
-              if (clickedIdx !== null) {
-                const element = document.querySelector(
-                  `input[tabindex="${clickedIdx}"]`,
-                );
-                if (element) {
-                  element.value = (i + 1).toString();
-                }
-              }
-            }}
-          >
-            {i + 1}
-          </button>
-        ))}
       </div>
     </>
   );
