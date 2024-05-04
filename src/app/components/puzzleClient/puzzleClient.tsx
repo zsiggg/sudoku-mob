@@ -7,7 +7,11 @@ import {
   updateValidDigits,
 } from '../../utils/puzzleClient/helper';
 import SubmissionToast from './submissionToast';
-import { addPuzzle, checkIsPuzzleInDb } from '../../utils/supabase/puzzlesDb';
+import {
+  addPuzzleAndMinMoves,
+  getPuzzleId,
+  updateMinMoves,
+} from '../../utils/supabase/puzzlesDb';
 import ControlRow from './controlRow';
 import Grid from './grid';
 import { useMediaQuery } from 'react-responsive';
@@ -58,11 +62,18 @@ const PuzzleClient = ({
       setShowFailureToast(false);
       setShowSuccessToast(true);
       if (puzzleId === undefined) {
-        const isPuzzleInDb = await checkIsPuzzleInDb(puzzle);
-        if (!isPuzzleInDb) {
-          await addPuzzle(puzzle);
+        // check if puzzle is in db
+        const dbPuzzleId = await getPuzzleId(puzzle);
+        if (dbPuzzleId === undefined) {
+          await addPuzzleAndMinMoves(puzzle, moveCount);
           setShowAddedToDbToast(true);
+        } else {
+          const newMinMoves = await updateMinMoves(dbPuzzleId, moveCount);
+          console.log('newMinMoves', newMinMoves);
         }
+      } else {
+        const newMinMoves = await updateMinMoves(puzzleId, moveCount);
+        console.log('newMinMoves', newMinMoves);
       }
     } else {
       setShowFailureToast(true);
