@@ -8,6 +8,8 @@ import {
   FormEvent,
   RefObject,
   SetStateAction,
+  useCallback,
+  useEffect,
   useState,
 } from 'react';
 
@@ -48,6 +50,10 @@ const Grid = ({
   const [validDigits, setValidDigits] = useState(
     Array.from({ length: digits.length }, () => true),
   );
+
+  // keep track of previous values of isShowingNumButtons, so that we can determine when it changes in useEffect
+  const [prevIsShowingNumButtons, setPrevIsShowingNumButtons] =
+    useState(isShowingNumButtons);
 
   const onDigitInput = (i: number, e: FormEvent<HTMLInputElement>) => {
     const digit = parseInt(e.currentTarget.value);
@@ -98,9 +104,10 @@ const Grid = ({
     setIsHighlightedArr(newIsHighlightedArr);
   };
 
-  const unhighlightAllCells = () => {
+  const unhighlightAllCells = useCallback(() => {
     setIsHighlightedArr(initialIsHighlightedArr);
-  };
+  }, [initialIsHighlightedArr]);
+
   const onHover = (i: number) => {
     setHoveredIdx(i);
     if (clickedIdx === null) {
@@ -133,6 +140,23 @@ const Grid = ({
     setClickedIdx(null);
     unhighlightAllCells();
   };
+
+  useEffect(() => {
+    if (prevIsShowingNumButtons !== isShowingNumButtons) {
+      if (isMobile && !isShowingNumButtons) {
+        setClickedIdx(null);
+        unhighlightAllCells();
+      }
+      setPrevIsShowingNumButtons(isShowingNumButtons);
+    }
+  }, [
+    isMobile,
+    isShowingNumButtons,
+    prevIsShowingNumButtons,
+    setClickedIdx,
+    unhighlightAllCells,
+    setPrevIsShowingNumButtons,
+  ]);
 
   return (
     <>
