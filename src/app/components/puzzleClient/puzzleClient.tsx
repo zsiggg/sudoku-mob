@@ -67,11 +67,16 @@ const PuzzleClient = ({
     }
   };
 
-  const onDigitInput = (i: number, e: FormEvent<HTMLInputElement>) => {
-    const digit = parseInt(e.currentTarget.value);
+  const onDigitInput = (
+    i: number,
+    e?: FormEvent<HTMLInputElement>,
+    value?: string,
+  ) => {
+    const digitStr = e?.currentTarget.value ?? value ?? '';
+    const digit = parseInt(digitStr);
     const prevDigit = digits[i];
 
-    if (e.currentTarget.value == '') {
+    if (digitStr == '') {
       // store empty string if user backspaces
       const newDigits = updateDigits(i, '', digits, setDigits);
       updateValidDigits(
@@ -84,7 +89,7 @@ const PuzzleClient = ({
       );
 
       setEmptyCellCount(emptyCellCount + 1);
-    } else if (e.currentTarget.value.length == 1 && digit >= 1 && digit <= 9) {
+    } else if (digitStr.length == 1 && digit >= 1 && digit <= 9) {
       // store valid digit
       const newDigits = updateDigits(i, digit.toString(), digits, setDigits);
       updateValidDigits(
@@ -102,7 +107,9 @@ const PuzzleClient = ({
       }
     } else {
       // don't change input if other characters are input
-      e.currentTarget.value = digits[i];
+      if (e) {
+        e.currentTarget.value = digits[i];
+      }
     }
   };
 
@@ -149,6 +156,7 @@ const PuzzleClient = ({
           clickedIdx={clickedIdx}
           isShowing={isShowingNumButtons}
           gridRef={gridRef}
+          onDigitInput={onDigitInput}
         />
       </div>
     </>
