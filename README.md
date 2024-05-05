@@ -15,9 +15,8 @@ Preview the app on [http://localhost:3000](http://localhost:3000).
 
 ## Screenshots
 
-![Screenshot 1](public/Screenshot_1.png)
-![Screenshot 2](public/Screenshot_2.png)
-![Screenshot 3](public/Screenshot_3.png)
-![Screenshot 4](public/Screenshot_4.png)
-![Screenshot 5](public/Screenshot_5.png)
-![Screenshot 6](public/Screenshot_6.png)
+<img src='public/Screenshot_1.png' width= "80%" />
+<img src='public/Screenshot_3.png' width= "80%" />
+<img src='public/Screenshot_4.png' width= "50%" />
+<img src='public/Screenshot_5.png' width= "50%" />
+<img src='public/Screenshot_6.png' width= "50%" />
