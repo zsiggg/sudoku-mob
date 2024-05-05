@@ -4,10 +4,14 @@ import { Dropdown } from 'flowbite-react';
 import Link from 'next/link';
 
 const PuzzleDropdownButton = ({
-  puzzleIds,
+  puzzleIdsRowNumsMinMoves,
   puzzleId,
 }: {
-  puzzleIds: string[];
+  puzzleIdsRowNumsMinMoves: {
+    id: string;
+    row_num: number;
+    min_moves: number | null;
+  }[];
   puzzleId?: string;
 }) => {
   return (
@@ -40,29 +44,33 @@ const PuzzleDropdownButton = ({
       >
         Random from database
       </Dropdown.Item>
-      {puzzleIds.map((id, i) => (
-        <>
-          {id !== puzzleId ? (
-            <Dropdown.Item
-              as={Link}
-              href={`/puzzle/${id}`}
-              key={id}
-              className="w-56 p-4 hover:bg-sky-100"
-            >
-              Puzzle {i + 1}
-            </Dropdown.Item>
-          ) : (
-            <Dropdown.Item
-              as="button"
-              key={id}
-              disabled={true}
-              className="w-56 bg-gray-100 p-4 opacity-50"
-            >
-              Puzzle {i + 1}
-            </Dropdown.Item>
-          )}
-        </>
-      ))}
+      {puzzleIdsRowNumsMinMoves
+        .sort((a, b) => a.row_num - b.row_num)
+        .map(({ id, row_num, min_moves }) => (
+          <>
+            {id !== puzzleId ? (
+              <Dropdown.Item
+                as={Link}
+                href={`/puzzle/${id}`}
+                key={id}
+                className="w-56 p-4 hover:bg-sky-100"
+              >
+                <span>Puzzle {row_num}</span>
+                <span className="ml-2">{`(Target: ${min_moves ?? '-'})`}</span>
+              </Dropdown.Item>
+            ) : (
+              <Dropdown.Item
+                as="button"
+                key={id}
+                disabled={true}
+                className="w-56 bg-gray-100 p-4 opacity-50"
+              >
+                <span>Puzzle {row_num}</span>
+                <span className="ml-2">{`(Target: ${min_moves ?? '-'})`}</span>
+              </Dropdown.Item>
+            )}
+          </>
+        ))}
     </Dropdown>
   );
 };
