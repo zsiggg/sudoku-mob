@@ -2,22 +2,24 @@
 
 import { createClient } from '@/app/utils/supabase/createSupabaseClient/server';
 
-export const getPuzzleIds = async () => {
+export const getPuzzleIdsAndRowNums = async () => {
   const supabase = createClient();
   const { data, error } = await supabase
     .from('sudoku_puzzles')
-    .select('id')
+    .select('id, row_num')
     .order('row_num', { ascending: true });
   if (error) throw error;
 
-  return data.map((row) => row.id);
+  return data;
 };
 
 export const getRandomPuzzleId = async () => {
-  const ids = await getPuzzleIds();
-  const i = Math.round(Math.random() * (ids.length - 1));
+  const supabase = createClient();
+  const { data, error } = await supabase.from('sudoku_puzzles').select('id');
+  if (error) throw error;
+  const i = Math.round(Math.random() * (data.length - 1));
 
-  return ids[i];
+  return data[i].id;
 };
 
 export const getPuzzleAndMinMoves = async (id: string) => {

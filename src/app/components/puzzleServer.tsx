@@ -1,6 +1,6 @@
 import {
   getPuzzleAndMinMoves,
-  getPuzzleIds,
+  getPuzzleIdsAndRowNums,
 } from '../utils/supabase/puzzlesDb';
 import PuzzleClient from './puzzleClient';
 
@@ -17,22 +17,20 @@ const PuzzleServer = async ({
       : puzzle !== undefined
         ? Promise.resolve({ puzzle: puzzle, min_moves: null })
         : Promise.reject('No puzzleId or puzzle provided');
-  const puzzleIdsPromise = getPuzzleIds();
-  const puzzleRowNumPromise = puzzleIdsPromise.then((puzzleIds) =>
-    puzzleIds.includes(puzzleId ?? '')
-      ? puzzleIds.indexOf(puzzleId ?? '') + 1
-      : undefined,
+  const puzzleIdsAndRowNumsPromise = getPuzzleIdsAndRowNums();
+  const puzzleRowNumPromise = puzzleIdsAndRowNumsPromise.then(
+    (rows) => rows.filter((row) => row.id === puzzleId)[0]?.row_num,
   );
 
   return Promise.all([
     puzzlePromise,
-    puzzleIdsPromise,
+    puzzleIdsAndRowNumsPromise,
     puzzleRowNumPromise,
-  ]).then(([{ puzzle, min_moves }, puzzleIds, puzzleRowNum]) => (
+  ]).then(([{ puzzle, min_moves }, puzzleIdsAndRowNums, puzzleRowNum]) => (
     <PuzzleClient
       puzzleId={puzzleId}
       puzzle={puzzle}
-      puzzleIds={puzzleIds}
+      puzzleIdsAndRowNums={puzzleIdsAndRowNums}
       puzzleRowNum={puzzleRowNum}
       targetMoves={min_moves}
     />

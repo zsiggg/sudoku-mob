@@ -4,10 +4,10 @@ import { Dropdown } from 'flowbite-react';
 import Link from 'next/link';
 
 const PuzzleDropdownButton = ({
-  puzzleIds,
+  puzzleIdsAndRowNums,
   puzzleId,
 }: {
-  puzzleIds: string[];
+  puzzleIdsAndRowNums: { id: string; row_num: number }[];
   puzzleId?: string;
 }) => {
   return (
@@ -40,7 +40,7 @@ const PuzzleDropdownButton = ({
       >
         Random from database
       </Dropdown.Item>
-      {puzzleIds.map((id, i) => (
+      {puzzleIdsAndRowNums.map(({ id, row_num }) => (
         <>
           {id !== puzzleId ? (
             <Dropdown.Item
@@ -49,7 +49,7 @@ const PuzzleDropdownButton = ({
               key={id}
               className="w-56 p-4 hover:bg-sky-100"
             >
-              Puzzle {i + 1}
+              Puzzle {row_num}
             </Dropdown.Item>
           ) : (
             <Dropdown.Item
@@ -58,7 +58,7 @@ const PuzzleDropdownButton = ({
               disabled={true}
               className="w-56 bg-gray-100 p-4 opacity-50"
             >
-              Puzzle {i + 1}
+              Puzzle {row_num}
             </Dropdown.Item>
           )}
         </>
