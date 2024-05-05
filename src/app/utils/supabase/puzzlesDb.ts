@@ -2,11 +2,11 @@
 
 import { createClient } from '@/app/utils/supabase/createSupabaseClient/server';
 
-export const getPuzzleIdsAndRowNums = async () => {
+export const getPuzzleIdsRowNumsMinMoves = async () => {
   const supabase = createClient();
   const { data, error } = await supabase
     .from('sudoku_puzzles')
-    .select('id, row_num')
+    .select('id, row_num, min_moves')
     .order('row_num', { ascending: true });
   if (error) throw error;
 

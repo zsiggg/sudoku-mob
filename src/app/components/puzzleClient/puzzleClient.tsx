@@ -19,13 +19,17 @@ import NumButtons from './numButtons';
 
 const PuzzleClient = ({
   puzzle,
-  puzzleIdsAndRowNums,
+  puzzleIdsRowNumsMinMoves,
   puzzleId,
   puzzleRowNum,
   targetMoves,
 }: {
   puzzle: string;
-  puzzleIdsAndRowNums: { id: string; row_num: number }[];
+  puzzleIdsRowNumsMinMoves: {
+    id: string;
+    row_num: number;
+    min_moves: number | null;
+  }[];
   puzzleId?: string;
   puzzleRowNum?: number;
   targetMoves: number | null;
@@ -171,7 +175,7 @@ const PuzzleClient = ({
           moveCount={moveCount}
         />
         <ControlRow
-          puzzleIdsAndRowNums={puzzleIdsAndRowNums}
+          puzzleIdsRowNumsMinMoves={puzzleIdsRowNumsMinMoves}
           puzzleId={puzzleId}
           emptyCellCount={emptyCellCount}
           onSubmit={onSubmit}
