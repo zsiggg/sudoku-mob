@@ -1,4 +1,5 @@
 import { Transition } from '@headlessui/react';
+import { TrashIcon } from '@heroicons/react/16/solid';
 import { FormEvent, RefObject } from 'react';
 
 const NumButtons = ({
@@ -28,9 +29,9 @@ const NumButtons = ({
       leaveTo="-translate-y-8 opacity-0"
     >
       <div className="flex w-full flex-wrap items-center justify-evenly">
-        {Array.from({ length: 9 }, (_, i) => (
+        {Array.from({ length: 10 }, (_, i) => (
           <button
-            className="m-1 size-14 rounded-md bg-sky-100 text-sky-800 hover:bg-sky-200 hover:text-sky-900 md:mx-2"
+            className="m-1 size-14 rounded-md bg-sky-100 text-sky-800 hover:bg-sky-200 hover:text-sky-900 md:mx-[1.5]"
             key={i + 1}
             onClick={() => {
               if (clickedIdx !== null) {
@@ -40,14 +41,19 @@ const NumButtons = ({
                   `grid-cell-${clickedIdx}`,
                 );
                 if (targetInputElement) {
-                  const digitStr = (i + 1).toString();
-                  targetInputElement.value = digitStr;
-                  onDigitInput(clickedIdx, undefined, digitStr);
+                  if (i + 1 === 10) {
+                    targetInputElement.value = '';
+                    onDigitInput(clickedIdx, undefined, '');
+                  } else {
+                    const digitStr = (i + 1).toString();
+                    targetInputElement.value = digitStr;
+                    onDigitInput(clickedIdx, undefined, digitStr);
+                  }
                 }
               }
             }}
           >
-            {i + 1}
+            {i + 1 === 10 ? <TrashIcon className="m-3" /> : i + 1}
           </button>
         ))}
       </div>
