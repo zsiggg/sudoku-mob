@@ -4,14 +4,18 @@ import PuzzleDropdownButton from './puzzleDropdownButton';
 import SubmitButton from './submitButton';
 
 const ControlRow = ({
-  puzzleIds,
+  puzzleIdsRowNumsMinMoves,
   puzzleId,
   emptyCellCount,
   onSubmit,
   isShowingNumButtons,
   setIsShowingNumButtons,
 }: {
-  puzzleIds: string[];
+  puzzleIdsRowNumsMinMoves: {
+    id: string;
+    row_num: number;
+    min_moves: number | null;
+  }[];
   puzzleId?: string;
   emptyCellCount: number;
   onSubmit: () => void;
@@ -20,7 +24,10 @@ const ControlRow = ({
 }) => {
   return (
     <div className="flex items-center justify-center gap-5">
-      <PuzzleDropdownButton puzzleIds={puzzleIds} puzzleId={puzzleId} />
+      <PuzzleDropdownButton
+        puzzleIdsRowNumsMinMoves={puzzleIdsRowNumsMinMoves}
+        puzzleId={puzzleId}
+      />
       <CalculatorButton
         isShowingNumButtons={isShowingNumButtons}
         setIsShowingNumButtons={setIsShowingNumButtons}
