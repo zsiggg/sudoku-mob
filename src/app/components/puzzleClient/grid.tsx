@@ -202,7 +202,7 @@ const Grid = ({
                     ? onMobileBlur
                     : onBlur
               }
-              readOnly={isMobile && isShowingNumButtons}
+              readOnly={isShowingNumButtons}
             />
           );
         })}
