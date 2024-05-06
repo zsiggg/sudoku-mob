@@ -1,7 +1,7 @@
 import { revalidateRootPath } from '@/app/utils/revalidation';
-import { PlusIcon } from '@heroicons/react/16/solid';
 import { Dropdown } from 'flowbite-react';
 import Link from 'next/link';
+import { HiListBullet } from 'react-icons/hi2';
 
 const PuzzleDropdownButton = ({
   puzzleIdsRowNumsMinMoves,
@@ -21,7 +21,7 @@ const PuzzleDropdownButton = ({
       label=""
       renderTrigger={() => (
         <button>
-          <PlusIcon className="size-12 text-sky-800 lg:size-10" />
+          <HiListBullet className="size-12 text-sky-800 lg:size-10" />
         </button>
       )}
     >

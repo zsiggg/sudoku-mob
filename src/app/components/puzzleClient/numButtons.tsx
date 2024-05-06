@@ -1,6 +1,6 @@
 import { Transition } from '@headlessui/react';
-import { TrashIcon } from '@heroicons/react/16/solid';
 import { FormEvent, RefObject } from 'react';
+import { HiOutlineTrash } from 'react-icons/hi2';
 
 const NumButtons = ({
   isShowing,
@@ -53,7 +53,11 @@ const NumButtons = ({
               }
             }}
           >
-            {i + 1 === 10 ? <TrashIcon className="m-3" /> : i + 1}
+            {i + 1 === 10 ? (
+              <HiOutlineTrash className="size-full p-4" />
+            ) : (
+              i + 1
+            )}
           </button>
         ))}
       </div>

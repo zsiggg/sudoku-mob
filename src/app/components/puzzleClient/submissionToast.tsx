@@ -1,11 +1,6 @@
 import { revalidateRootPath } from '@/app/utils/revalidation';
 import { Transition } from '@headlessui/react';
-import {
-  BoltIcon,
-  CheckIcon,
-  TrophyIcon,
-  XMarkIcon,
-} from '@heroicons/react/16/solid';
+import { HiMiniBolt, HiCheck, HiTrophy, HiXMark } from 'react-icons/hi2';
 import { Toast } from 'flowbite-react';
 import Link from 'next/link';
 
@@ -52,7 +47,7 @@ const SubmissionToast = ({
           className={`fixed left-1/2 top-5 w-max -translate-x-1/2 ${isShowingSuccess || isShowingFailure ? 'translate-y-16' : 'translate-y-0'} transform-gpu bg-white p-2 transition-transform duration-300 ease-out`}
         >
           <div className="inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-yellow-100 text-yellow-500">
-            <TrophyIcon className="size-5" />
+            <HiTrophy className="size-5" />
           </div>
           <div className="ml-2 mr-1 text-sm">
             Congratulations! You beat the previous high score!
@@ -82,7 +77,7 @@ const SubmissionToast = ({
           className={`fixed left-1/2 top-5 w-max -translate-x-1/2 ${isShowingSuccess || isShowingFailure ? 'translate-y-16' : 'translate-y-0'} transform-gpu bg-white p-2 transition-transform duration-300 ease-out`}
         >
           <div className="inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-yellow-100 text-yellow-500">
-            <BoltIcon className="size-5" />
+            <HiMiniBolt className="size-5" />
           </div>
           <div className="ml-2 mr-1 text-sm">
             {
@@ -104,7 +99,7 @@ const SubmissionToast = ({
       >
         <Toast className="fixed left-1/2 top-5 w-max -translate-x-1/2 bg-white p-2">
           <div className="inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-green-100 text-green-500">
-            <CheckIcon className="size-5" />
+            <HiCheck className="size-5" />
           </div>
           <div className="ml-2 text-sm">You solved it!</div>
           <Link
@@ -129,7 +124,7 @@ const SubmissionToast = ({
       >
         <Toast className="fixed left-1/2 top-5 w-max -translate-x-1/2 bg-white p-2">
           <div className="inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-red-100 text-red-500">
-            <XMarkIcon className="size-5" />
+            <HiXMark className="size-5" />
           </div>
           <div className="mx-2 text-sm">Check the puzzle again</div>
           <Toast.Toggle onDismiss={onFailureDismiss} />
