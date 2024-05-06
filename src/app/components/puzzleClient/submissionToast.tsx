@@ -1,3 +1,4 @@
+import { revalidateRootPath } from '@/app/utils/revalidation';
 import { Transition } from '@headlessui/react';
 import {
   BoltIcon,
@@ -109,6 +110,7 @@ const SubmissionToast = ({
           <Link
             className="mx-1 rounded-lg p-1 text-sm font-medium text-cyan-600 hover:font-bold"
             href={'/puzzle/new'}
+            onClick={() => revalidateRootPath()}
           >
             New puzzle?
           </Link>
