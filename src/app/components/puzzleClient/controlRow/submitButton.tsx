@@ -1,4 +1,4 @@
-import { CheckIcon } from '@heroicons/react/16/solid';
+import { HiCheck } from 'react-icons/hi2';
 
 const SubmitButton = ({
   emptyCellCount,
@@ -9,7 +9,7 @@ const SubmitButton = ({
 }) => {
   return (
     <button disabled={emptyCellCount !== 0} onClick={() => onSubmit()}>
-      <CheckIcon
+      <HiCheck
         className={`mx-auto size-12 lg:size-10 ${emptyCellCount === 0 ? 'text-sky-800/100' : 'text-sky-800/25'}`}
       />
     </button>
