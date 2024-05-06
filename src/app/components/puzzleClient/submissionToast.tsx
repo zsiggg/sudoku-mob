@@ -42,6 +42,7 @@ const SubmissionToast = ({
             ? '-translate-y-36'
             : '-translate-y-20'
         }
+        className="fixed top-0 w-screen"
       >
         <Toast
           className={`fixed left-1/2 top-5 w-4/5 max-w-max -translate-x-1/2 ${isShowingSuccess || isShowingFailure ? 'translate-y-16' : 'translate-y-0'} transform-gpu bg-white p-2 transition-transform duration-300 ease-out`}
@@ -72,6 +73,7 @@ const SubmissionToast = ({
             ? '-translate-y-36'
             : '-translate-y-20'
         }
+        className="fixed top-0 w-screen"
       >
         <Toast
           className={`fixed left-1/2 top-5 w-4/5 max-w-max -translate-x-1/2 ${isShowingSuccess || isShowingFailure ? 'translate-y-16' : 'translate-y-0'} transform-gpu bg-white p-2 transition-transform duration-300 ease-out`}
@@ -96,6 +98,7 @@ const SubmissionToast = ({
         leave="transition-transform transform-gpu duration-300 ease-out"
         leaveFrom="translate-y-0"
         leaveTo="-translate-y-20"
+        className="fixed top-0 w-screen"
       >
         <Toast className="fixed left-1/2 top-5 w-4/5 max-w-max -translate-x-1/2 bg-white p-2">
           <div className="inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-green-100 text-green-500">
@@ -121,6 +124,7 @@ const SubmissionToast = ({
         leave="transition-transform transform-gpu duration-300 ease-out"
         leaveFrom="translate-y-0"
         leaveTo="-translate-y-20"
+        className="fixed top-0 w-screen"
       >
         <Toast className="fixed left-1/2 top-5 w-4/5 max-w-max -translate-x-1/2 bg-white p-2">
           <div className="inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-red-100 text-red-500">
