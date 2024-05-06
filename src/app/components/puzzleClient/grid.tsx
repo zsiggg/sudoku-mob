@@ -203,6 +203,7 @@ const Grid = ({
                     : onBlur
               }
               readOnly={isShowingNumButtons}
+              autoComplete="off"
             />
           );
         })}
