@@ -2,7 +2,9 @@
 
 A Sudoku app built with Next.JS and Supabase, hosted on Vercel at https://sudoku-mob.vercel.app/.
 
-Generate a new puzzle to solve, or select an existing one from the database and see if you can beat the previous score!
+Generate new puzzles to play and solve it with the lowest number of moves.
+
+See how many moves other users took to solve an existing puzzle, beat them to get your score uploaded!
 
 ## Running locally
 
